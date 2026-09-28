@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#19a83b" />
+  <meta name="description" content="EcoConecta GV — descubra como preparar seus resíduos e onde descartá-los corretamente na Grande Vitória." />
+  <meta name="application-name" content="EcoConecta GV" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="EcoConecta" />
+  <meta name="format-detection" content="telephone=no" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>EcoConecta GV</title>
+</head>
+<body>
+  <div class="desktop-backdrop" aria-hidden="true"></div>
+
+  <div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="splashTitle" aria-describedby="splashText">
+    <div class="splash-orb splash-orb-a"></div>
+    <div class="splash-orb splash-orb-b"></div>
+    <div class="splash-logo" aria-hidden="true">
+      <span class="logo-ring"><span class="logo-leaf"></span></span>
+    </div>
+    <h1 id="splashTitle">EcoConecta <span>GV</span></h1>
+    <p id="splashText">Descartar bem conecta pessoas, cidades e um futuro mais verde.</p>
+    <button class="splash-enter" id="splashEnter" type="button">
+      <span>Entrar no EcoConecta</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5"/></svg>
+    </button>
+  </div>
+
+  <div class="app" id="app">
+    <main class="app-main" id="appMain">
+      <!-- HOME -->
+      <section class="screen active" id="screen-home" data-screen="home">
+        <header class="home-header">
+          <div>
+            <span class="hello">Olá! <span aria-hidden="true">👋</span></span>
+            <h1>O que você quer<br />descartar?</h1>
+          </div>
+          <button class="icon-button" id="homeInstall" type="button" aria-label="Salvar EcoConecta no celular">
+            <svg viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3"/></svg>
+          </button>
+        </header>
+
+        <div class="smart-search home-search" id="homeSearchWrap">
+          <span class="search-leading"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg></span>
+          <input id="homeSearch" type="search" placeholder="Garrafa PET, lâmpada, celular..." autocomplete="off" />
+          <button class="search-clear" id="homeSearchClear" type="button" aria-label="Limpar busca" hidden>
+            <svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg>
+          </button>
+          <div class="suggestions" id="homeSuggestions" hidden></div>
+        </div>
+
+        <div class="quick-row single">
+          <button class="quick-pill" id="howHome" type="button">
+            <span class="quick-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+            <span><b>Como usar o EcoConecta</b><small>Veja o fluxo em 3 passos simples</small></span>
+            <span class="quick-chevron" aria-hidden="true">›</span>
+          </button>
+        </div>
+
+        <div class="section-title-row">
+          <div><span class="overline">ACESSO RÁPIDO</span><h2>Escolha um material</h2></div>
+          <button class="text-link" id="allMaterials" type="button">Ver todos</button>
+        </div>
+        <div class="material-grid" id="materialGrid"></div>
+
+        <section class="home-install-card" id="homeInstallCard" aria-label="Salvar EcoConecta no celular">
+          <div class="home-install-app-icon"><img src="icons/icon-192.png" alt="" /></div>
+          <div class="home-install-copy">
+            <span class="overline">ACESSO RÁPIDO</span>
+            <strong>Salve o EcoConecta no celular</strong>
+            <p>Adicione à tela inicial e abra depois como um aplicativo, sem precisar escanear o QR novamente.</p>
+          </div>
+          <button class="home-install-action" id="homeInstallAction" type="button">Adicionar</button>
+        </section>
+
+        <button class="eco-banner" id="ecoBanner" type="button">
+          <span>
+            <small>DICA DO DIA</small>
+            <strong>Pequenas escolhas<br />fazem diferença.</strong>
+            <em>Veja como preparar seus resíduos</em>
+          </span>
+          <span class="eco-banner-art" aria-hidden="true">
+            <i class="hill hill-1"></i><i class="hill hill-2"></i><i class="tree tree-1"></i><i class="tree tree-2"></i><i class="tree tree-3"></i>
+          </span>
+        </button>
+      </section>
+
+      <!-- SEARCH / RESULTS -->
+      <section class="screen" id="screen-search" data-screen="search" aria-labelledby="searchTitle">
+        <header class="app-header">
+          <button class="back-button" type="button" data-back aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+          <div class="header-copy"><h1 id="searchTitle">Ecopontos próximos</h1><p id="searchSubtitle">Encontre locais para descarte na Grande Vitória</p></div>
+          <button class="icon-button" id="openFiltersTop" type="button" aria-label="Filtrar resultados"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg></button>
+        </header>
+
+        <div class="smart-search result-search" id="resultSearchWrap">
+          <span class="search-leading"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg></span>
+          <input id="resultSearch" type="search" placeholder="Buscar material, bairro ou ecoponto" autocomplete="off" />
+          <button class="search-clear" id="resultSearchClear" type="button" aria-label="Limpar busca" hidden><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button>
+          <div class="suggestions" id="resultSuggestions" hidden></div>
+        </div>
+
+        <div class="chip-scroll" id="cityChips" aria-label="Filtrar por município"></div>
+
+        <div class="results-meta">
+          <span id="resultsCount">0 pontos encontrados</span>
+          <button id="sortResults" type="button"><svg viewBox="0 0 24 24"><path d="M8 6h12M8 12h8M8 18h4M4 4v16M2 18l2 2 2-2"/></svg><span id="sortText">Relevância</span></button>
+        </div>
+
+        <div class="point-list" id="pointList"></div>
+        <div class="empty-panel" id="emptyPanel" hidden>
+          <span class="empty-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg></span>
+          <h2>Nenhum ponto encontrado</h2>
+          <p>Tente outro município, material ou termo de busca.</p>
+          <button id="resetSearchFilters" type="button">Limpar filtros</button>
+        </div>
+      </section>
+
+      <!-- MATERIAL DETAIL -->
+      <section class="screen" id="screen-material" data-screen="material">
+        <header class="app-header material-header-bar">
+          <button class="back-button" type="button" data-back aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+          <div class="header-copy"><h1 id="materialTitle">Material</h1></div>
+          <span class="header-spacer"></span>
+        </header>
+        <div id="materialDetail"></div>
+      </section>
+
+      <!-- ROUTE / MAP -->
+      <section class="screen map-screen" id="screen-map" data-screen="map">
+        <header class="app-header map-header">
+          <button class="back-button" type="button" data-back aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+          <div class="header-copy"><h1>Rota até o ecoponto</h1></div>
+          <span class="header-spacer"></span>
+        </header>
+        <div class="map-canvas" id="mapCanvas">
+          <iframe id="osmMap" title="Mapa do ecoponto" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="map-loading" id="mapLoading"><span></span><p>Carregando mapa...</p></div>
+        </div>
+        <div class="route-card-wrap" id="routeCard"></div>
+      </section>
+
+      <!-- QUICK GUIDE -->
+      <section class="screen" id="screen-guide" data-screen="guide">
+        <header class="app-header">
+          <button class="back-button" type="button" data-back aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+          <div class="header-copy"><h1>Como usar</h1><p>Do resíduo ao ecoponto</p></div>
+          <span class="header-spacer"></span>
+        </header>
+
+        <div class="guide-hero" aria-hidden="true">
+          <div class="guide-landscape"><i class="guide-city"></i><i class="guide-hill a"></i><i class="guide-hill b"></i></div>
+          <div class="guide-flow">
+            <span class="guide-node material-node"><svg viewBox="0 0 24 24"><path d="M7 5h10l-1 16H8L7 5Z"/><path d="M8 5l1-2h6l1 2M9 9h6"/></svg></span>
+            <i class="guide-line"></i>
+            <span class="guide-node leaf-node"><svg viewBox="0 0 24 24"><path d="M20 4C12 4 6 7 5 13c-.6 3.7 2.6 6.6 6.2 5.6C17 17 20 11 20 4Z"/><path d="M5 20c2.5-5 6-8 11-11"/></svg></span>
+            <i class="guide-line"></i>
+            <span class="guide-node pin-node"><svg viewBox="0 0 24 24"><path d="M12 21s6-4.7 6-11a6 6 0 1 0-12 0c0 6.3 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></span>
+          </div>
+        </div>
+
+        <div class="guide-copy">
+          <span class="overline">USO RÁPIDO</span>
+          <h2>Escolha, prepare e encontre o descarte certo.</h2>
+          <p>O EcoConecta foi pensado para levar você direto à informação que precisa, com poucos toques e instruções objetivas.</p>
+        </div>
+
+        <ol class="step-list">
+          <li><span>1</span><div><b>Escolha o resíduo</b><p>Busque pelo nome ou selecione uma categoria na tela inicial.</p></div><i><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h4"/></svg></i></li>
+          <li><span>2</span><div><b>Prepare corretamente</b><p>Confira orientações rápidas do que fazer e do que evitar antes do descarte.</p></div><i><svg viewBox="0 0 24 24"><path d="m12 3 8 4-8 4-8-4 8-4Z"/><path d="m4 12 8 4 8-4M4 17l8 4 8-4"/></svg></i></li>
+          <li><span>3</span><div><b>Encontre o ponto</b><p>Filtre por cidade, veja a distância e abra a rota até o local escolhido.</p></div><i><svg viewBox="0 0 24 24"><path d="M12 21s6-4.7 6-11a6 6 0 1 0-12 0c0 6.3 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></i></li>
+        </ol>
+
+        <div class="install-panel" id="installPanel">
+          <div class="install-icon"><img src="icons/icon-192.png" alt="" /></div>
+          <div class="install-copy"><small>ATALHO NO CELULAR</small><b>Salve o EcoConecta na tela inicial</b><p>Depois, abra diretamente pelo ícone como um aplicativo.</p></div>
+          <button id="installAppButton" type="button">Adicionar</button>
+          <div class="ios-guide" id="iosGuide" hidden>Safari: toque em <b>Compartilhar</b> → <b>Adicionar à Tela de Início</b>.</div>
+        </div>
+      </section>
+
+      <!-- MAIS -->
+      <section class="screen" id="screen-more" data-screen="more">
+        <header class="app-header">
+          <div class="header-copy"><span class="overline">ECOCONECTA GV</span><h1>Mais opções</h1><p>Ajuda, instalação e informações do projeto.</p></div>
+          <span class="header-spacer"></span>
+        </header>
+        <div class="more-list">
+          <button class="more-row" id="moreGuide" type="button"><span class="more-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span><b>Como usar</b><small>Veja o fluxo do resíduo até o ponto de descarte.</small></span><i>›</i></button>
+          <button class="more-row" id="moreInstall" type="button"><span class="more-icon"><svg viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 17v3h14v-3"/></svg></span><span><b>Instalar no celular</b><small>Adicione o EcoConecta à tela inicial como aplicativo.</small></span><i>›</i></button>
+          <button class="more-row" id="moreAbout" type="button"><span class="more-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 10v6M12 7h.01"/></svg></span><span><b>Sobre o EcoConecta</b><small>Conheça a proposta e o objetivo do Projeto Integrador.</small></span><i>›</i></button>
+        </div>
+        <div class="more-status"><span class="logo-leaf mini"></span><div><b>EcoConecta GV</b><p>Versão demonstrativa • PWA mobile-first</p></div></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="screen" id="screen-about" data-screen="about">
+        <header class="app-header">
+          <button class="back-button" type="button" data-back aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+          <div class="header-copy"><h1>Sobre o EcoConecta</h1><p>Projeto Integrador • ADS</p></div>
+          <span class="header-spacer"></span>
+        </header>
+        <div class="about-hero">
+          <span class="about-logo"><span class="logo-ring"><span class="logo-leaf"></span></span></span>
+          <h2>EcoConecta <em>GV</em></h2>
+          <p>Uma ferramenta mobile para orientar o descarte e conectar moradores a pontos de coleta da Grande Vitória.</p>
+        </div>
+        <div class="about-cards">
+          <article><span>01</span><div><b>Orientação clara</b><p>Mostra como preparar cada tipo de resíduo antes do descarte.</p></div></article>
+          <article><span>02</span><div><b>Busca por ecopontos</b><p>Permite filtrar locais por município, material e proximidade.</p></div></article>
+          <article><span>03</span><div><b>Experiência mobile</b><p>Interface otimizada para celular e instalação como PWA na tela inicial.</p></div></article>
+        </div>
+        <div class="mvp-warning"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><p><b>Versão de demonstração.</b> Os ecopontos cadastrados nesta versão são fictícios e deverão ser substituídos por dados oficiais validados antes da publicação.</p></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav bottom-nav-three" id="bottomNav" aria-label="Navegação principal">
+      <button class="nav-item" id="nearMeNav" type="button" aria-label="Encontrar ecopontos perto de mim">
+        <svg viewBox="0 0 24 24"><path d="M12 21s6-4.7 6-11a6 6 0 1 0-12 0c0 6.3 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg>
+        <small>Perto de mim</small>
+      </button>
+      <button class="home-main-nav active" data-nav-screen="home" type="button" aria-label="Ir para o início">
+        <span><svg viewBox="0 0 24 24"><path d="m3 11 9-7 9 7M5 10v10h14V10M9 20v-6h6v6"/></svg></span>
+        <small>Início</small>
+      </button>
+      <button class="nav-item" data-nav-screen="more" type="button" aria-label="Mais opções">
+        <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+        <small>Mais</small>
+      </button>
+    </nav>
+  </div>
+
+  <dialog class="filter-dialog" id="filterDialog">
+    <form method="dialog" class="filter-sheet" id="filterForm">
+      <div class="sheet-handle"></div>
+      <div class="filter-head"><div><span class="overline">REFINAR BUSCA</span><h2>Filtrar resultados</h2></div><button value="cancel" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button></div>
+
+      <fieldset><legend>Município</legend><div class="choice-grid" id="filterCities"></div></fieldset>
+      <fieldset><legend>Material aceito</legend><div class="choice-grid materials" id="filterMaterials"></div></fieldset>
+      <fieldset class="range-field"><div class="range-label"><legend>Distância máxima</legend><b id="distanceLabel">Até 20 km</b></div><input id="distanceRange" type="range" min="1" max="30" value="20" /><div class="range-scale"><span>1 km</span><span>10 km</span><span>20 km</span><span>30 km+</span></div></fieldset>
+      <button class="apply-filter" id="applyFilter" value="default" type="submit">Aplicar filtros</button>
+      <button class="clear-filter" id="clearFilter" type="button">Limpar tudo</button>
+    </form>
+  </dialog>
+
+
+  <dialog class="install-dialog" id="installDialog">
+    <div class="install-sheet">
+      <div class="sheet-handle"></div>
+      <button class="install-close" id="installClose" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button>
+      <div class="install-dialog-icon"><img src="icons/icon-192.png" alt="Ícone do EcoConecta GV" /></div>
+      <span class="overline">ECOCONECTA NO CELULAR</span>
+      <h2 id="installDialogTitle">Adicionar à tela inicial</h2>
+      <p id="installDialogText">Salve o EcoConecta para abrir rapidamente como um aplicativo.</p>
+      <ol class="install-steps" id="installSteps"></ol>
+      <button class="install-primary" id="installPrimary" type="button">Entendi</button>
+      <p class="install-note">A instalação funciona quando o site estiver publicado em HTTPS. Em desenvolvimento, também funciona em localhost.</p>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
