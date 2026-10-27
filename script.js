@@ -81,52 +81,52 @@ const wasteTypes = [
   }
 ];
 
-// Pontos de Coleta Seletiva / PEVs Oficiais das Prefeituras da Grande Vitória
+// Pontos de Coleta Seletiva (PEVs) Oficiais da Grande Vitória - Dados Refinados
 const locations = [
-  // --- VIANA (Prefeitura Municipal de Viana) ---
+  // --- VIANA ---
   {
     id: 'pev-viana-villaschi',
-    name: 'PEV Coleta Seletiva - Arlindo Villaschi',
+    name: 'Ponto de Coleta Seletiva - Arlindo Villaschi',
     city: 'Viana',
     district: 'Arlindo Ângelo Villaschi',
-    address: 'Rua Principal, Arlindo Ângelo Villaschi, Viana - ES',
+    address: 'Bairro Arlindo Ângelo Villaschi (Ponto Público), Viana - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3735,
     lng: -40.4502
   },
   {
     id: 'pev-viana-marcilio',
-    name: 'PEV Coleta Seletiva - Marcílio de Noronha',
+    name: 'Ponto de Coleta Seletiva - Marcílio de Noronha',
     city: 'Viana',
     district: 'Marcílio de Noronha',
-    address: 'Av. Askim, Marcílio de Noronha, Viana - ES',
+    address: 'Av. Askim (Área Central), Marcílio de Noronha, Viana - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3871,
     lng: -40.4398
   },
   {
     id: 'pev-viana-universal',
-    name: 'PEV Coleta Seletiva - Universal',
+    name: 'Ponto de Coleta Seletiva - Universal',
     city: 'Viana',
     district: 'Universal',
-    address: 'Praça de Universal, Viana - ES',
+    address: 'Praça Principal de Universal, Viana - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3820,
     lng: -40.4350
   },
 
-  // --- CARIACICA (Prefeitura Municipal de Cariacica / SEMMAM) ---
+  // --- CARIACICA ---
   {
     id: 'pev-cariacica-campo-grande',
     name: 'PEV Coleta Seletiva - Campo Grande',
     city: 'Cariacica',
     district: 'Campo Grande',
-    address: 'Av. Expedito García, Campo Grande, Cariacica - ES',
+    address: 'Eixo Comercial de Campo Grande, Cariacica - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3410,
     lng: -40.3830
   },
@@ -137,7 +137,7 @@ const locations = [
     district: 'Itacibá',
     address: 'Praça de Itacibá, Cariacica - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3275,
     lng: -40.3701
   },
@@ -146,57 +146,57 @@ const locations = [
     name: 'PEV Coleta Seletiva - Jardim América',
     city: 'Cariacica',
     district: 'Jardim América',
-    address: 'BR-262 (Próximo à Estação Pedro Nolasco), Jardim América, Cariacica - ES',
+    address: 'Região de Jardim América / BR-262, Cariacica - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3228,
     lng: -40.3592
   },
 
-  // --- VILA VELHA (Prefeitura Municipal de Vila Velha / SEMSU) ---
+  // --- VILA VELHA ---
   {
     id: 'pev-vv-itapua',
     name: 'Ponto de Coleta Seletiva - Itapuã',
     city: 'Vila Velha',
     district: 'Itapuã',
-    address: 'Orla de Itapuã, Vila Velha - ES',
+    address: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3521,
     lng: -40.2878
   },
   {
     id: 'pev-vv-praia-da-costa',
-    name: 'PEV Coleta Seletiva - Praia da Costa',
+    name: 'Ponto de Coleta Seletiva - Praia da Costa',
     city: 'Vila Velha',
     district: 'Praia da Costa',
-    address: 'Av. Gil Veloso (Orla), Praia da Costa, Vila Velha - ES',
+    address: 'Av. Antônio Gil Veloso (Orla), Praia da Costa, Vila Velha - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3370,
     lng: -40.2920
   },
   {
     id: 'pev-vv-coqueiral',
-    name: 'PEV Coleta Seletiva - Coqueiral de Itaparica',
+    name: 'Ponto de Coleta Seletiva - Coqueiral de Itaparica',
     city: 'Vila Velha',
     district: 'Coqueiral de Itaparica',
     address: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3622,
     lng: -40.2995
   },
 
-  // --- VITÓRIA (Prefeitura Municipal de Vitória / SEMMAM) ---
+  // --- VITÓRIA ---
   {
     id: 'pev-vix-jardim-camburi',
     name: 'PEV Coleta Seletiva - Jardim Camburi',
     city: 'Vitoria',
     district: 'Jardim Camburi',
-    address: 'Parque Botânico Vale / Orla de Camburi, Vitória - ES',
+    address: 'Orla de Camburi / Entorno do Parque Botânico, Vitória - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.2590,
     lng: -40.2650
   },
@@ -205,9 +205,9 @@ const locations = [
     name: 'PEV Coleta Seletiva - Praia do Canto',
     city: 'Vitoria',
     district: 'Praia do Canto',
-    address: 'Praça dos Namorados, Praia do Canto, Vitória - ES',
+    address: 'Praça dos Namorados / Reta da Penha, Vitória - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.3015,
     lng: -40.2925
   },
@@ -218,20 +218,20 @@ const locations = [
     district: 'Mata da Praia',
     address: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.2780,
     lng: -40.2840
   },
 
-  // --- SERRA (Prefeitura Municipal da Serra / SEMA) ---
+  // --- SERRA ---
   {
     id: 'pev-serra-laranjeiras',
-    name: 'PEV Coleta Seletiva - Parque Residencial Laranjeiras',
+    name: 'PEV Coleta Seletiva - Laranjeiras',
     city: 'Serra',
     district: 'Laranjeiras',
-    address: 'Av. Central, Laranjeiras, Serra - ES',
+    address: 'Av. Central (Parque Residencial Laranjeiras), Serra - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro', 'eletronico'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.1970,
     lng: -40.2550
   },
@@ -242,7 +242,7 @@ const locations = [
     district: 'Jacaraípe',
     address: 'Orla de Jacaraípe, Serra - ES',
     materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso livre / PEV de rua)',
+    hours: '24 horas (Acesso público contínuo)',
     lat: -20.1311,
     lng: -40.1923
   }
