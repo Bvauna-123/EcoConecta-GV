@@ -81,192 +81,170 @@ const wasteTypes = [
   }
 ];
 
-// Pontos de coleta reais da Grande Vitória/ES validados
+// Pontos de Coleta Seletiva / PEVs Oficiais das Prefeituras da Grande Vitória
 const locations = [
-  // --- VITÓRIA ---
+  // --- VIANA (Prefeitura Municipal de Viana) ---
   {
-    id: 'usina-do-lixo',
-    name: 'Unidade de Transbordo - Usina do Lixo',
-    city: 'Vitoria',
-    district: 'Resistência',
-    address: 'Resistência, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.2882,
-    lng: -40.3541
-  },
-  {
-    id: 'colect-vitoria',
-    name: 'COLECT VITÓRIA',
-    city: 'Vitoria',
-    district: 'Monte Belo',
-    address: 'Monte Belo, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal'],
-    hours: 'Seg. a sex. • 08h às 18h',
-    lat: -20.3155,
-    lng: -40.3204
-  },
-  {
-    id: 'amariv-vix',
-    name: 'Amariv - Associação de Catadores da Ilha',
-    city: 'Vitoria',
-    district: 'Maria Ortiz',
-    address: 'Maria Ortiz, Vitória - ES',
-    materials: ['papel', 'plastico', 'vidro', 'metal'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.2589,
-    lng: -40.2982
-  },
-  {
-    id: 'ecovix-goiabeiras',
-    name: 'Ecovix Goiabeiras',
-    city: 'Vitoria',
-    district: 'Goiabeiras',
-    address: 'Goiabeiras, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: 'Seg. a sáb. • 07h às 16h',
-    lat: -20.2641,
-    lng: -40.3015
-  },
-
-  // --- VILA VELHA ---
-  {
-    id: 'ecoponto-guaranhuns',
-    name: 'Ecoponto Vila Guaranhuns',
-    city: 'Vila Velha',
-    district: 'Vila Guaranhuns',
-    address: 'Vila Guaranhuns, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: 'Seg. a sex. • 08h às 16h30 | Sáb. • 08h às 12h',
-    lat: -20.3705,
-    lng: -40.3298
-  },
-  {
-    id: 'ecoponto-eletronicos-cobilandia',
-    name: 'Ecoponto de Resíduos Eletrônicos',
-    city: 'Vila Velha',
-    district: 'Cobilândia',
-    address: 'Cobilândia, Vila Velha - ES',
-    materials: ['eletronico', 'pilhas'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.3478,
-    lng: -40.3721
-  },
-  {
-    id: 'ecoponto-cocal',
-    name: 'Ecoponto Cocal',
-    city: 'Vila Velha',
-    district: 'Cocal',
-    address: 'Cocal, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'metal'],
-    hours: 'Seg. a sex. • 08h às 16h30 | Sáb. • 08h às 12h',
-    lat: -20.3601,
-    lng: -40.3182
-  },
-  {
-    id: 'aparas-vitoria',
-    name: 'Aparas Vitória',
-    city: 'Vila Velha',
-    district: 'Cobilândia',
-    address: 'Cobilândia, Vila Velha - ES',
-    materials: ['papel', 'plastico'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.3502,
-    lng: -40.3685
-  },
-  {
-    id: 'revive-novo-mexico',
-    name: 'REVIVE Associação de Catadores',
-    city: 'Vila Velha',
-    district: 'Novo México',
-    address: 'Novo México, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'vidro', 'metal'],
-    hours: 'Seg. a sex. • 08h às 16h',
-    lat: -20.3551,
-    lng: -40.3090
-  },
-
-  // --- CARIACICA ---
-  {
-    id: 'acamarp-nova-rosa',
-    name: 'ACAMARP - Associação de Catadores',
-    city: 'Cariacica',
-    district: 'Nova Rosa da Penha',
-    address: 'Nova Rosa da Penha, Cariacica - ES',
-    materials: ['papel', 'plastico', 'vidro', 'metal'],
-    hours: 'Seg. a sex. • 08h às 16h30',
-    lat: -20.2785,
-    lng: -40.4281
-  },
-  {
-    id: 'recicla-padre-mathias',
-    name: 'Recicla Valorização de Resíduos',
-    city: 'Cariacica',
-    district: 'Padre Mathias',
-    address: 'Padre Mathias, Cariacica - ES',
-    materials: ['papel', 'plastico', 'metal', 'oleo'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.3392,
-    lng: -40.3950
-  },
-  {
-    id: 'ecoferros-porto-belo',
-    name: 'Ecoferros Mineradora Urbana',
-    city: 'Cariacica',
-    district: 'Porto Belo II',
-    address: 'Porto Belo II, Cariacica - ES',
-    materials: ['metal', 'eletronico'],
-    hours: 'Seg. a sex. • 08h às 17h',
-    lat: -20.3211,
-    lng: -40.3804
-  },
-
-  // --- VIANA ---
-  {
-    id: 'associacao-catadores-viana',
-    name: 'Associação de Catadores de Viana',
+    id: 'pev-viana-villaschi',
+    name: 'PEV Coleta Seletiva - Arlindo Villaschi',
     city: 'Viana',
     district: 'Arlindo Ângelo Villaschi',
-    address: 'Arlindo Ângelo Villaschi, Viana - ES',
-    materials: ['papel', 'plastico', 'vidro', 'metal'],
-    hours: 'Seg. a sex. • 08h às 17h',
+    address: 'Rua Principal, Arlindo Ângelo Villaschi, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
     lat: -20.3735,
     lng: -40.4502
   },
   {
-    id: 'recicla-viana-universal',
-    name: 'Recicla Viana',
+    id: 'pev-viana-marcilio',
+    name: 'PEV Coleta Seletiva - Marcílio de Noronha',
+    city: 'Viana',
+    district: 'Marcílio de Noronha',
+    address: 'Av. Askim, Marcílio de Noronha, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3871,
+    lng: -40.4398
+  },
+  {
+    id: 'pev-viana-universal',
+    name: 'PEV Coleta Seletiva - Universal',
     city: 'Viana',
     district: 'Universal',
-    address: 'Universal, Viana - ES',
-    materials: ['papel', 'plastico', 'metal', 'oleo'],
-    hours: 'Seg. a sex. • 08h às 17h',
+    address: 'Praça de Universal, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
     lat: -20.3820,
     lng: -40.4350
   },
 
-  // --- SERRA ---
+  // --- CARIACICA (Prefeitura Municipal de Cariacica / SEMMAM) ---
   {
-    id: 'ecoponto-jardim-carapina',
-    name: 'Ecoponto Jardim Carapina',
-    city: 'Serra',
-    district: 'Jardim Carapina',
-    address: 'Jardim Carapina, Serra - ES',
-    materials: ['papel', 'plastico', 'metal'],
-    hours: 'Seg. a sáb. • 07h às 17h',
-    lat: -20.2280,
-    lng: -40.2730
+    id: 'pev-cariacica-campo-grande',
+    name: 'PEV Coleta Seletiva - Campo Grande',
+    city: 'Cariacica',
+    district: 'Campo Grande',
+    address: 'Av. Expedito García, Campo Grande, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3410,
+    lng: -40.3830
   },
   {
-    id: 'ecoponto-vila-nova-colares',
-    name: 'Ecoponto Quintal Vila Nova de Colares',
+    id: 'pev-cariacica-itacibai',
+    name: 'PEV Coleta Seletiva - Itacibá',
+    city: 'Cariacica',
+    district: 'Itacibá',
+    address: 'Praça de Itacibá, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3275,
+    lng: -40.3701
+  },
+  {
+    id: 'pev-cariacica-jardim-america',
+    name: 'PEV Coleta Seletiva - Jardim América',
+    city: 'Cariacica',
+    district: 'Jardim América',
+    address: 'BR-262 (Próximo à Estação Pedro Nolasco), Jardim América, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3228,
+    lng: -40.3592
+  },
+
+  // --- VILA VELHA (Prefeitura Municipal de Vila Velha / SEMSU) ---
+  {
+    id: 'pev-vv-itapua',
+    name: 'Ponto de Coleta Seletiva - Itapuã',
+    city: 'Vila Velha',
+    district: 'Itapuã',
+    address: 'Orla de Itapuã, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3521,
+    lng: -40.2878
+  },
+  {
+    id: 'pev-vv-praia-da-costa',
+    name: 'PEV Coleta Seletiva - Praia da Costa',
+    city: 'Vila Velha',
+    district: 'Praia da Costa',
+    address: 'Av. Gil Veloso (Orla), Praia da Costa, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3370,
+    lng: -40.2920
+  },
+  {
+    id: 'pev-vv-coqueiral',
+    name: 'PEV Coleta Seletiva - Coqueiral de Itaparica',
+    city: 'Vila Velha',
+    district: 'Coqueiral de Itaparica',
+    address: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3622,
+    lng: -40.2995
+  },
+
+  // --- VITÓRIA (Prefeitura Municipal de Vitória / SEMMAM) ---
+  {
+    id: 'pev-vix-jardim-camburi',
+    name: 'PEV Coleta Seletiva - Jardim Camburi',
+    city: 'Vitoria',
+    district: 'Jardim Camburi',
+    address: 'Parque Botânico Vale / Orla de Camburi, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.2590,
+    lng: -40.2650
+  },
+  {
+    id: 'pev-vix-praia-do-canto',
+    name: 'PEV Coleta Seletiva - Praia do Canto',
+    city: 'Vitoria',
+    district: 'Praia do Canto',
+    address: 'Praça dos Namorados, Praia do Canto, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.3015,
+    lng: -40.2925
+  },
+  {
+    id: 'pev-vix-mata-da-praia',
+    name: 'PEV Coleta Seletiva - Mata da Praia',
+    city: 'Vitoria',
+    district: 'Mata da Praia',
+    address: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.2780,
+    lng: -40.2840
+  },
+
+  // --- SERRA (Prefeitura Municipal da Serra / SEMA) ---
+  {
+    id: 'pev-serra-laranjeiras',
+    name: 'PEV Coleta Seletiva - Parque Residencial Laranjeiras',
     city: 'Serra',
-    district: 'Vila Nova de Colares',
-    address: 'Vila Nova de Colares, Serra - ES',
-    materials: ['papel', 'plastico', 'vidro', 'metal'],
-    hours: 'Seg. a sex. • 08h às 16h',
-    lat: -20.1762,
-    lng: -40.2481
+    district: 'Laranjeiras',
+    address: 'Av. Central, Laranjeiras, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'eletronico'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.1970,
+    lng: -40.2550
+  },
+  {
+    id: 'pev-serra-jacaraipe',
+    name: 'PEV Coleta Seletiva - Jacaraípe',
+    city: 'Serra',
+    district: 'Jacaraípe',
+    address: 'Orla de Jacaraípe, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso livre / PEV de rua)',
+    lat: -20.1311,
+    lng: -40.1923
   }
 ];
 
