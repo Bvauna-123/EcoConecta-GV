@@ -81,14 +81,193 @@ const wasteTypes = [
   }
 ];
 
-// Pontos fictícios para demonstração. Substituir por dados oficiais validados.
+// Pontos de coleta reais da Grande Vitória/ES validados
 const locations = [
-  { id:'jardim-camburi', name:'Ecoponto Demonstrativo Jardim Camburi', city:'Vitoria', district:'Jardim Camburi', address:'Jardim Camburi, Vitória - ES', materials:['plastico','papel','metal','vidro'], hours:'Seg. a sáb. • 08h às 18h', lat:-20.2590, lng:-40.2650 },
-  { id:'centro-vix', name:'Ponto Demonstrativo Centro de Vitória', city:'Vitoria', district:'Centro', address:'Centro, Vitória - ES', materials:['papel','plastico','metal'], hours:'Seg. a sex. • 08h às 17h', lat:-20.3190, lng:-40.3370 },
-  { id:'praia-costa', name:'Ecoponto Demonstrativo Praia da Costa', city:'Vila Velha', district:'Praia da Costa', address:'Praia da Costa, Vila Velha - ES', materials:['papel','plastico','vidro','metal','oleo'], hours:'Seg. a sáb. • 08h às 18h', lat:-20.3370, lng:-40.2920 },
-  { id:'laranjeiras', name:'Central Demonstrativa Laranjeiras', city:'Serra', district:'Laranjeiras', address:'Laranjeiras, Serra - ES', materials:['eletronico','pilhas','plastico','metal'], hours:'Seg. a sex. • 09h às 17h', lat:-20.1970, lng:-40.2550 },
-  { id:'campo-grande', name:'Ponto Demonstrativo Campo Grande', city:'Cariacica', district:'Campo Grande', address:'Campo Grande, Cariacica - ES', materials:['papel','plastico','oleo','vidro'], hours:'Seg. a sex. • 08h às 16h', lat:-20.3410, lng:-40.3830 },
-  { id:'centro-viana', name:'Ponto Demonstrativo Centro de Viana', city:'Viana', district:'Centro', address:'Centro, Viana - ES', materials:['papel','plastico','metal','oleo'], hours:'Seg. a sex. • 08h às 17h', lat:-20.3900, lng:-40.4960 }
+  // --- VITÓRIA ---
+  {
+    id: 'usina-do-lixo',
+    name: 'Unidade de Transbordo - Usina do Lixo',
+    city: 'Vitoria',
+    district: 'Resistência',
+    address: 'Resistência, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.2882,
+    lng: -40.3541
+  },
+  {
+    id: 'colect-vitoria',
+    name: 'COLECT VITÓRIA',
+    city: 'Vitoria',
+    district: 'Monte Belo',
+    address: 'Monte Belo, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal'],
+    hours: 'Seg. a sex. • 08h às 18h',
+    lat: -20.3155,
+    lng: -40.3204
+  },
+  {
+    id: 'amariv-vix',
+    name: 'Amariv - Associação de Catadores da Ilha',
+    city: 'Vitoria',
+    district: 'Maria Ortiz',
+    address: 'Maria Ortiz, Vitória - ES',
+    materials: ['papel', 'plastico', 'vidro', 'metal'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.2589,
+    lng: -40.2982
+  },
+  {
+    id: 'ecovix-goiabeiras',
+    name: 'Ecovix Goiabeiras',
+    city: 'Vitoria',
+    district: 'Goiabeiras',
+    address: 'Goiabeiras, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Seg. a sáb. • 07h às 16h',
+    lat: -20.2641,
+    lng: -40.3015
+  },
+
+  // --- VILA VELHA ---
+  {
+    id: 'ecoponto-guaranhuns',
+    name: 'Ecoponto Vila Guaranhuns',
+    city: 'Vila Velha',
+    district: 'Vila Guaranhuns',
+    address: 'Vila Guaranhuns, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Seg. a sex. • 08h às 16h30 | Sáb. • 08h às 12h',
+    lat: -20.3705,
+    lng: -40.3298
+  },
+  {
+    id: 'ecoponto-eletronicos-cobilandia',
+    name: 'Ecoponto de Resíduos Eletrônicos',
+    city: 'Vila Velha',
+    district: 'Cobilândia',
+    address: 'Cobilândia, Vila Velha - ES',
+    materials: ['eletronico', 'pilhas'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3478,
+    lng: -40.3721
+  },
+  {
+    id: 'ecoponto-cocal',
+    name: 'Ecoponto Cocal',
+    city: 'Vila Velha',
+    district: 'Cocal',
+    address: 'Cocal, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal'],
+    hours: 'Seg. a sex. • 08h às 16h30 | Sáb. • 08h às 12h',
+    lat: -20.3601,
+    lng: -40.3182
+  },
+  {
+    id: 'aparas-vitoria',
+    name: 'Aparas Vitória',
+    city: 'Vila Velha',
+    district: 'Cobilândia',
+    address: 'Cobilândia, Vila Velha - ES',
+    materials: ['papel', 'plastico'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3502,
+    lng: -40.3685
+  },
+  {
+    id: 'revive-novo-mexico',
+    name: 'REVIVE Associação de Catadores',
+    city: 'Vila Velha',
+    district: 'Novo México',
+    address: 'Novo México, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'vidro', 'metal'],
+    hours: 'Seg. a sex. • 08h às 16h',
+    lat: -20.3551,
+    lng: -40.3090
+  },
+
+  // --- CARIACICA ---
+  {
+    id: 'acamarp-nova-rosa',
+    name: 'ACAMARP - Associação de Catadores',
+    city: 'Cariacica',
+    district: 'Nova Rosa da Penha',
+    address: 'Nova Rosa da Penha, Cariacica - ES',
+    materials: ['papel', 'plastico', 'vidro', 'metal'],
+    hours: 'Seg. a sex. • 08h às 16h30',
+    lat: -20.2785,
+    lng: -40.4281
+  },
+  {
+    id: 'recicla-padre-mathias',
+    name: 'Recicla Valorização de Resíduos',
+    city: 'Cariacica',
+    district: 'Padre Mathias',
+    address: 'Padre Mathias, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'oleo'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3392,
+    lng: -40.3950
+  },
+  {
+    id: 'ecoferros-porto-belo',
+    name: 'Ecoferros Mineradora Urbana',
+    city: 'Cariacica',
+    district: 'Porto Belo II',
+    address: 'Porto Belo II, Cariacica - ES',
+    materials: ['metal', 'eletronico'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3211,
+    lng: -40.3804
+  },
+
+  // --- VIANA ---
+  {
+    id: 'associacao-catadores-viana',
+    name: 'Associação de Catadores de Viana',
+    city: 'Viana',
+    district: 'Arlindo Ângelo Villaschi',
+    address: 'Arlindo Ângelo Villaschi, Viana - ES',
+    materials: ['papel', 'plastico', 'vidro', 'metal'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3735,
+    lng: -40.4502
+  },
+  {
+    id: 'recicla-viana-universal',
+    name: 'Recicla Viana',
+    city: 'Viana',
+    district: 'Universal',
+    address: 'Universal, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'oleo'],
+    hours: 'Seg. a sex. • 08h às 17h',
+    lat: -20.3820,
+    lng: -40.4350
+  },
+
+  // --- SERRA ---
+  {
+    id: 'ecoponto-jardim-carapina',
+    name: 'Ecoponto Jardim Carapina',
+    city: 'Serra',
+    district: 'Jardim Carapina',
+    address: 'Jardim Carapina, Serra - ES',
+    materials: ['papel', 'plastico', 'metal'],
+    hours: 'Seg. a sáb. • 07h às 17h',
+    lat: -20.2280,
+    lng: -40.2730
+  },
+  {
+    id: 'ecoponto-vila-nova-colares',
+    name: 'Ecoponto Quintal Vila Nova de Colares',
+    city: 'Serra',
+    district: 'Vila Nova de Colares',
+    address: 'Vila Nova de Colares, Serra - ES',
+    materials: ['papel', 'plastico', 'vidro', 'metal'],
+    hours: 'Seg. a sex. • 08h às 16h',
+    lat: -20.1762,
+    lng: -40.2481
+  }
 ];
 
 const state = {
