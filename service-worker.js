@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ecoconecta-gv-app-v8';
+const CACHE_NAME = 'ecoconecta-gv-app-v9';
 const APP_SHELL = [
   './', './index.html', './styles.css', './script.js', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'
