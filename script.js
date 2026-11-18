@@ -81,170 +81,433 @@ const wasteTypes = [
   }
 ];
 
-// Pontos de Coleta Seletiva (PEVs) Oficiais da Grande Vitória - Dados Refinados
+
 const locations = [
-  // --- VIANA ---
+  // ==================================================
+  // VIANA
+  // ==================================================
   {
     id: 'pev-viana-villaschi',
     name: 'Ponto de Coleta Seletiva - Arlindo Villaschi',
     city: 'Viana',
     district: 'Arlindo Ângelo Villaschi',
-    address: 'Bairro Arlindo Ângelo Villaschi (Ponto Público), Viana - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3735,
-    lng: -40.4502
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Bairro Arlindo Ângelo Villaschi, Viana - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-viana-marcilio',
     name: 'Ponto de Coleta Seletiva - Marcílio de Noronha',
     city: 'Viana',
     district: 'Marcílio de Noronha',
-    address: 'Av. Askim (Área Central), Marcílio de Noronha, Viana - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3871,
-    lng: -40.4398
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Av. Askim, Marcílio de Noronha, Viana - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-viana-universal',
     name: 'Ponto de Coleta Seletiva - Universal',
     city: 'Viana',
     district: 'Universal',
-    address: 'Praça Principal de Universal, Viana - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3820,
-    lng: -40.4350
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Praça Principal de Universal, Viana - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-viana',
+    name: 'ASCAMAVI - Associação de Catadores',
+    city: 'Viana',
+    district: 'Nova Bethânia',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Carajás, 01, Nova Bethânia, Viana - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
 
-  // --- CARIACICA ---
+  // ==================================================
+  // CARIACICA
+  // ==================================================
   {
     id: 'pev-cariacica-campo-grande',
     name: 'PEV Coleta Seletiva - Campo Grande',
     city: 'Cariacica',
     district: 'Campo Grande',
-    address: 'Eixo Comercial de Campo Grande, Cariacica - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3410,
-    lng: -40.3830
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Eixo Comercial de Campo Grande, Cariacica - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-cariacica-itacibai',
     name: 'PEV Coleta Seletiva - Itacibá',
     city: 'Cariacica',
     district: 'Itacibá',
-    address: 'Praça de Itacibá, Cariacica - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3275,
-    lng: -40.3701
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Praça de Itacibá, Cariacica - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-cariacica-jardim-america',
     name: 'PEV Coleta Seletiva - Jardim América',
     city: 'Cariacica',
     district: 'Jardim América',
-    address: 'Região de Jardim América / BR-262, Cariacica - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3228,
-    lng: -40.3592
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Região de Jardim América, Cariacica - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-cariacica-acamarp',
+    name: 'ACAMARP - Associação de Catadores',
+    city: 'Cariacica',
+    district: 'Nova Rosa da Penha II',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Gaspar, Nova Rosa da Penha II, Cariacica - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-cariacica-flexvida',
+    name: 'FLEX VIDA - Associação de Catadores',
+    city: 'Cariacica',
+    district: 'Nova Canaã',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Vitória, Nova Canaã, Cariacica - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
 
-  // --- VILA VELHA ---
+  // ==================================================
+  // VILA VELHA
+  // ==================================================
   {
     id: 'pev-vv-itapua',
     name: 'Ponto de Coleta Seletiva - Itapuã',
     city: 'Vila Velha',
     district: 'Itapuã',
-    address: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3521,
-    lng: -40.2878
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-vv-praia-da-costa',
     name: 'Ponto de Coleta Seletiva - Praia da Costa',
     city: 'Vila Velha',
     district: 'Praia da Costa',
-    address: 'Av. Antônio Gil Veloso (Orla), Praia da Costa, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3370,
-    lng: -40.2920
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Av. Antônio Gil Veloso, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-vv-coqueiral',
     name: 'Ponto de Coleta Seletiva - Coqueiral de Itaparica',
     city: 'Vila Velha',
     district: 'Coqueiral de Itaparica',
-    address: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3622,
-    lng: -40.2995
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'ecoponto-vv-guaranhuns',
+    name: 'Ecoponto - Vila Guaranhuns',
+    city: 'Vila Velha',
+    district: 'Vila Guaranhuns',
+    type: 'ecoponto',
+    address: null,
+    addressCandidate: 'Rua Jussara Rodrigues Lorenzutti, 207, Vila Guaranhuns, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'ecoponto-vv-cocal',
+    name: 'Ecoponto Cocal',
+    city: 'Vila Velha',
+    district: 'Cocal',
+    type: 'ecoponto',
+    address: null,
+    addressCandidate: 'Rua Dezoito, 12, Cocal, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'ecoponto-vv-cobilandia',
+    name: 'Ecoponto - Cobilândia',
+    city: 'Vila Velha',
+    district: 'Cobilândia',
+    type: 'ecoponto',
+    address: null,
+    addressCandidate: 'Avenida Carlos Lindenberg, 1115, Cobilândia, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-vv-revive',
+    name: 'REVIVE Associação de Catadores',
+    city: 'Vila Velha',
+    district: 'Novo México',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Três, Novo México, Vila Velha - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
 
-  // --- VITÓRIA ---
+  // ==================================================
+  // VITÓRIA
+  // ==================================================
   {
     id: 'pev-vix-jardim-camburi',
     name: 'PEV Coleta Seletiva - Jardim Camburi',
-    city: 'Vitoria',
+    city: 'Vitória',
     district: 'Jardim Camburi',
-    address: 'Orla de Camburi / Entorno do Parque Botânico, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.2590,
-    lng: -40.2650
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Orla de Camburi, Vitória - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-vix-praia-do-canto',
     name: 'PEV Coleta Seletiva - Praia do Canto',
-    city: 'Vitoria',
+    city: 'Vitória',
     district: 'Praia do Canto',
-    address: 'Praça dos Namorados / Reta da Penha, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.3015,
-    lng: -40.2925
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Praça dos Namorados, Vitória - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-vix-mata-da-praia',
     name: 'PEV Coleta Seletiva - Mata da Praia',
-    city: 'Vitoria',
+    city: 'Vitória',
     district: 'Mata da Praia',
-    address: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.2780,
-    lng: -40.2840
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-vix-ascamare',
+    name: 'ASCAMARE - Associação de Catadores',
+    city: 'Vitória',
+    district: 'Consolação',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Construtor Camilo Gianordoli, 117, Consolação, Vitória - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-vix-amariv',
+    name: 'AMARIV - Associação dos Catadores da Ilha de Vitória',
+    city: 'Vitória',
+    district: 'Maria Ortiz',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Ouro Preto, 95, Maria Ortiz, Vitória - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
 
-  // --- SERRA ---
+  // ==================================================
+  // SERRA
+  // ==================================================
+  {
+    id: 'ecoponto-serra-carapina',
+    name: 'Ecoponto - Jardim Carapina',
+    city: 'Serra',
+    district: 'Jardim Carapina',
+    type: 'ecoponto',
+    address: 'Rua Presidente Kennedy, 60, Jardim Carapina, Serra - ES',
+    materials: [
+      'papel', 'plastico', 'metal', 'vidro',
+      'entulho_pequeno', 'moveis',
+      'eletrodomesticos', 'podas'
+    ],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'verified',
+    coordinatesVerified: false,
+    publicAccess: true
+  },
+  {
+    id: 'ecoponto-serra-colares',
+    name: 'Ecoponto Quintal - Vila Nova de Colares',
+    city: 'Serra',
+    district: 'Vila Nova de Colares',
+    type: 'ecoponto',
+    address: 'Rua Floriano Peixoto, 353, Vila Nova de Colares, Serra - ES',
+    materials: [
+      'papel', 'plastico', 'metal', 'vidro',
+      'entulho_pequeno', 'moveis',
+      'eletrodomesticos', 'podas'
+    ],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'verified',
+    coordinatesVerified: false,
+    publicAccess: true
+  },
+  {
+    id: 'ecoponto-serra-novo-porto-canoa',
+    name: 'Projeto João de Barro - Novo Porto Canoa',
+    city: 'Serra',
+    district: 'Novo Porto Canoa',
+    type: 'ecoponto',
+    address: 'Avenida Domingos José Martins, 142, Novo Porto Canoa, Serra - ES',
+    materials: [
+      'papel', 'plastico', 'metal', 'vidro',
+      'entulho_pequeno', 'moveis',
+      'eletrodomesticos', 'podas'
+    ],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'verified',
+    coordinatesVerified: false,
+    publicAccess: true
+  },
   {
     id: 'pev-serra-laranjeiras',
     name: 'PEV Coleta Seletiva - Laranjeiras',
     city: 'Serra',
     district: 'Laranjeiras',
-    address: 'Av. Central (Parque Residencial Laranjeiras), Serra - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro', 'eletronico'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.1970,
-    lng: -40.2550
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Av. Central, Parque Residencial Laranjeiras, Serra - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   },
   {
     id: 'pev-serra-jacaraipe',
     name: 'PEV Coleta Seletiva - Jacaraípe',
     city: 'Serra',
     district: 'Jacaraípe',
-    address: 'Orla de Jacaraípe, Serra - ES',
-    materials: ['papel', 'plastico', 'metal', 'vidro'],
-    hours: '24 horas (Acesso público contínuo)',
-    lat: -20.1311,
-    lng: -40.1923
+    type: 'pev',
+    address: null,
+    addressCandidate: 'Orla de Jacaraípe, Serra - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-serra-abrasol',
+    name: 'ABRASOL - Associação de Catadores',
+    city: 'Serra',
+    district: 'Planalto Serrano',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Sergipe, 254, Planalto Serrano, Serra - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
+  },
+  {
+    id: 'assoc-serra-recuperalixo',
+    name: 'Recupera Lixo',
+    city: 'Serra',
+    district: 'Jardim Tropical',
+    type: 'associacao',
+    address: null,
+    addressCandidate: 'Rua Assembleia de Deus, 41, Jardim Tropical, Serra - ES',
+    materials: [],
+    hours: null,
+    lat: null,
+    lng: null,
+    status: 'pending'
   }
 ];
 
