@@ -390,6 +390,7 @@ const locations = [
     lng: -40.2750
   }
 ];
+
 const state = {
   currentScreen: 'home', previousScreen: null, selectedMaterial: null, selectedLocation: null,
   city: 'todos', material: 'todos', query: '', maxDistance: 20, userPosition: null, sort: 'relevance', nearbyMode: false,
@@ -439,7 +440,6 @@ function openMaterial(id){
   state.material=id;
   addRecent(materialById(id).name,'material',id);
 
-  // Evento GA4: Clique em Material
   if(typeof gtag === 'function') {
     gtag('event', 'clique_material', {
       material_id: id,
@@ -541,7 +541,6 @@ function renderSuggestions(container,value,onSelect){
   $$('.suggestion-item',container).forEach(btn=>btn.addEventListener('click',()=>onSelect(btn.dataset.type,btn.dataset.id)));
 }
 function handleSuggestion(type,id){
-  // Evento GA4: Clique em sugestão inteligente
   if(typeof gtag === 'function') {
     gtag('event', 'clique_sugestao', {
       tipo_sugestao: type,
@@ -610,127 +609,10 @@ function updateInstallUI(){
   $('#iosGuide').hidden=installed||!ios;
 }
 function openInstallHelp(){
-  const dialog=$('#installDialog');
-  const steps=$('#installSteps');
-  const title=$('#installDialogTitle');
-  const text=$('#installDialogText');
-  const primary=$('#installPrimary');
-  if(isIOS()){
-    title.textContent='Adicionar no iPhone ou iPad';
-    text.textContent='No Safari, você pode salvar o EcoConecta na Tela de Início para abrir como um aplicativo.';
-    steps.innerHTML='<li><span>1</span><div><b>Abra no Safari</b><p>Se estiver em outro navegador, abra esta página no Safari.</p></div></li><li><span>2</span><div><b>Toque em Compartilhar</b><p>Use o ícone de compartilhamento do Safari.</p></div></li><li><span>3</span><div><b>Adicionar à Tela de Início</b><p>Confirme o nome EcoConecta e toque em Adicionar.</p></div></li>';
-    primary.textContent='Entendi';
-    primary.dataset.action='close';
-  }else{
-    title.textContent='Salvar EcoConecta no celular';
-    text.textContent='Seu navegador não exibiu a instalação automática. Você ainda pode criar um atalho pela opção de instalar/adicionar à tela inicial do navegador.';
-    steps.innerHTML='<li><span>1</span><div><b>Abra o menu do navegador</b><p>Normalmente é o botão ⋮ ou o menu de opções.</p></div></li><li><span>2</span><div><b>Procure a opção de instalação</b><p>Ela pode aparecer como “Instalar app” ou “Adicionar à tela inicial”.</p></div></li><li><span>3</span><div><b>Confirme</b><p>O ícone do EcoConecta ficará junto aos seus aplicativos.</p></div></li>';
-    primary.textContent='Entendi';
-    primary.dataset.action='close';
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then(()=>{ deferredInstallPrompt=null; updateInstallUI(); });
+  } else {
+    showToast(isIOS() ? 'Toque no ícone de Compartilhar e escolha "Adicionar à Tela Inicial".' : 'Use o menu do navegador para instalar o aplicativo.');
   }
-  if(typeof dialog.showModal==='function') dialog.showModal(); else showToast('Use o menu do navegador para adicionar o EcoConecta à tela inicial.');
-}
-async function requestInstall(){
-  if(isStandalone()){showToast('O EcoConecta já está salvo neste dispositivo.');return;}
-  if(isIOS()){openInstallHelp();return;}
-  if(!deferredInstallPrompt){openInstallHelp();return;}
-  deferredInstallPrompt.prompt();
-  const choice=await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt=null;
-  updateInstallUI();
-  if(choice.outcome==='accepted') showToast('EcoConecta adicionado ao dispositivo.');
-}
-
-// event wiring
-renderMaterials(); renderFilterChoices();
-$$('[data-nav-screen]').forEach(btn=>btn.addEventListener('click',()=>{
-  state.nearbyMode=false;
-  showScreen(btn.dataset.navScreen);
-}));
-$$('[data-back]').forEach(btn=>btn.addEventListener('click',goBack));
-$('#nearMeNav').addEventListener('click',requestLocation);
-$('#moreGuide').addEventListener('click',()=>showScreen('guide'));
-$('#moreInstall').addEventListener('click',requestInstall);
-$('#moreAbout').addEventListener('click',()=>showScreen('about'));
-$('#howHome').addEventListener('click',()=>showScreen('guide'));
-$('#ecoBanner').addEventListener('click',()=>openMaterial('plastico'));
-$('#allMaterials').addEventListener('click',()=>{state.nearbyMode=false;state.material='todos';state.query='';showScreen('search');});
-$('#openFiltersTop').addEventListener('click',()=>{renderFilterChoices();$('#filterDialog').showModal();});
-$('#distanceRange').addEventListener('input',e=>{$('#distanceLabel').textContent=`Até ${e.target.value} km`;});
-$('#filterForm').addEventListener('submit',()=>{state.maxDistance=Number($('#distanceRange').value);setTimeout(renderResults,0);});
-$('#clearFilter').addEventListener('click',()=>{state.city='todos';state.material='todos';state.maxDistance=20;renderFilterChoices();});
-$('#resetSearchFilters').addEventListener('click',()=>{state.city='todos';state.material='todos';state.query='';state.maxDistance=20;renderResults();});
-$('#sortResults').addEventListener('click',()=>{ const order=state.userPosition?['relevance','distance','alpha']:['relevance','alpha']; state.sort=order[(order.indexOf(state.sort)+1)%order.length]; renderResults(); });
-$('#homeInstall').addEventListener('click',requestInstall); $('#homeInstallAction').addEventListener('click',requestInstall); $('#installAppButton').addEventListener('click',requestInstall);
-$('#installClose').addEventListener('click',()=>$('#installDialog').close());
-$('#installPrimary').addEventListener('click',()=>$('#installDialog').close());
-$('#installDialog').addEventListener('click',e=>{if(e.target===$('#installDialog'))$('#installDialog').close();});
-
-function connectSearch(input, clearBtn, suggestions, mode){
-  input.addEventListener('input',()=>{
-    const value=input.value; clearBtn.hidden=!value;
-    renderSuggestions(suggestions,value,(type,id)=>{suggestions.hidden=true;handleSuggestion(type,id);});
-    if(mode==='results'){state.nearbyMode=false;state.query=value;renderResults();}
-  });
-  input.addEventListener('keydown',e=>{
-    if(e.key==='Enter'){
-      e.preventDefault();
-      state.query=input.value;
-
-      // Evento GA4: Realizar busca por texto livre
-      if(typeof gtag === 'function' && input.value.trim()) {
-        gtag('event', 'realizar_busca', {
-          termo_busca: input.value,
-          origem: mode
-        });
-      }
-
-      const match=matchMaterials(input.value)[0];
-      if(mode==='home'&&match){openMaterial(match.id);}
-      else{state.nearbyMode=false;state.material='todos';showScreen('search');renderResults();}
-      suggestions.hidden=true;
-    }
-  });
-  clearBtn.addEventListener('click',()=>{input.value='';clearBtn.hidden=true;suggestions.hidden=true;if(mode==='results'){state.nearbyMode=false;state.query='';renderResults();}input.focus();});
-}
-connectSearch($('#homeSearch'),$('#homeSearchClear'),$('#homeSuggestions'),'home');
-connectSearch($('#resultSearch'),$('#resultSearchClear'),$('#resultSuggestions'),'results');
-document.addEventListener('click',e=>{
-  if(!$('#homeSearchWrap').contains(e.target))$('#homeSuggestions').hidden=true;
-  if(!$('#resultSearchWrap').contains(e.target))$('#resultSuggestions').hidden=true;
-
-  // Eventos GA4: Interações com Ecopontos (Mapa e Rotas)
-  const routeBtn = e.target.closest('.route-btn, .route-open');
-  if (routeBtn && typeof gtag === 'function') {
-    gtag('event', 'tracar_rota', {
-      destino_url: routeBtn.href
-    });
-  }
-
-  const mapBtn = e.target.closest('[data-map]');
-  if (mapBtn && typeof gtag === 'function') {
-    gtag('event', 'ver_mapa_ecoponto', {
-      ponto_id: mapBtn.dataset.map
-    });
-  }
-});
-
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;updateInstallUI();});
-window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;updateInstallUI();showToast('EcoConecta instalado com sucesso.');});
-const canSW=location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname);
-if('serviceWorker'in navigator&&canSW) window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
-updateInstallUI();
-
-const splash = $('#splash');
-const splashEnter = $('#splashEnter');
-if (splash && splashEnter) {
-  splashEnter.addEventListener('click', () => {
-    splash.classList.add('hide');
-    splash.setAttribute('aria-hidden', 'true');
-    setTimeout(() => {
-      splash.remove();
-      const firstInteractive = $('#homeSearch');
-      if (firstInteractive) firstInteractive.focus({ preventScroll: true });
-    }, 460);
-  });
 }
