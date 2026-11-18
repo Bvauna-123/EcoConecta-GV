@@ -81,7 +81,6 @@ const wasteTypes = [
   }
 ];
 
-// Pontos de Coleta Seletiva, Ecopontos e Associações da Grande Vitória - Dados Atualizados
 const locations = [
   // --- VIANA ---
   {
@@ -406,7 +405,7 @@ function locationById(id) { return locations.find(item => item.id === id); }
 function routeUrl(address) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`; }
 function distanceKm(a,b){ const rad=x=>x*Math.PI/180,R=6371,dLat=rad(b.lat-a.lat),dLng=rad(b.lng-a.lng),lat1=rad(a.lat),lat2=rad(b.lat); const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
 function distanceLabel(loc){ if(!state.userPosition) return '—'; const d=distanceKm(state.userPosition,loc); return `${d<10?d.toFixed(1):Math.round(d)} km`; }
-function showToast(text){ clearTimeout(toastTimer); const el=$('#toast'); el.textContent=text; el.classList.add('show'); toastTimer=setTimeout(()=>el.classList.remove('show'),2600); }
+function showToast(text){ clearTimeout(toastTimer); const el=$('#toast'); if(!el) return; el.textContent=text; el.classList.add('show'); toastTimer=setTimeout(()=>el.classList.remove('show'),2600); }
 function addRecent(label,type,id){ state.recent = [{label,type,id,at:Date.now()}, ...state.recent.filter(x=>!(x.type===type && x.id===id))].slice(0,8); localStorage.setItem('ecoconecta:recent',JSON.stringify(state.recent)); }
 
 function setActiveNav(screen){
@@ -421,7 +420,7 @@ function showScreen(screen, {push=true}={}){
   $$('.screen').forEach(el=>el.classList.toggle('active', el.dataset.screen===screen));
   state.currentScreen = screen;
   setActiveNav(screen);
-  $('#appMain').scrollTo({top:0}); window.scrollTo({top:0,behavior:'instant'});
+  $('#appMain')?.scrollTo({top:0}); window.scrollTo({top:0,behavior:'instant'});
   if(screen==='search') renderResults();
   if(screen==='material') renderMaterialDetail();
   if(screen==='map') renderMap();
@@ -430,6 +429,7 @@ function goBack(){ showScreen(state.previousScreen || 'home',{push:false}); }
 
 function renderMaterials(){
   const grid=$('#materialGrid');
+  if(!grid) return;
   grid.innerHTML = wasteTypes.map((item,index)=>`<button class="material-card ${index===6?'wide':''}" type="button" data-material="${item.id}" style="--material-bg:${item.tint};--material-color:${item.color};--material-tint:${item.tint}"><span class="material-icon">${item.icon}</span><strong>${item.name}</strong></button>`).join('') +
     `<button class="material-card" type="button" data-all="true" style="--material-bg:#eef8ec;--material-color:#27973b;--material-tint:#eef8ec"><span class="material-icon">${ICONS.leaf}</span><strong>Outros materiais</strong></button>`;
   $$('.material-card[data-material]',grid).forEach(btn=>btn.addEventListener('click',()=>openMaterial(btn.dataset.material)));
@@ -453,20 +453,24 @@ function openMaterial(id){
 function renderMaterialDetail(){
   const item=materialById(state.selectedMaterial || state.material);
   if(!item){ showScreen('home',{push:false}); return; }
-  $('#materialTitle').textContent=item.name;
-  $('#materialDetail').innerHTML=`
-    <div class="material-hero" style="--material-a:${item.colors[0]};--material-b:${item.colors[1]}">
-      <div class="material-hero-copy"><div class="hero-material-icon">${item.icon}</div><h2>${item.name}</h2><p>${item.short}</p></div>
-      <div class="material-hero-art" aria-hidden="true">${item.icon}</div>
-    </div>
-    <h3 class="detail-section-title">Como preparar?</h3>
-    <div class="prepare-list">${item.steps.map(step=>`<article class="prepare-card"><span class="prepare-icon">${step[2]}</span><div><b>${step[0]}</b><p>${step[1]}</p></div></article>`).join('')}</div>
-    <div class="acceptance">
-      <article class="accept-card good"><span>✓</span><div><b>Pode descartar</b><p>${item.good}</p></div></article>
-      <article class="accept-card bad"><span>×</span><div><b>Evite</b><p>${item.bad}</p></div></article>
-    </div>
-    <button class="detail-cta" id="materialPoints" type="button">${ICONS.pin} Ver pontos que recebem ${item.name.toLowerCase()}</button>`;
-  $('#materialPoints').addEventListener('click',()=>{ state.nearbyMode=false; state.material=item.id; state.query=''; showScreen('search'); });
+  const titleEl = $('#materialTitle');
+  const detailEl = $('#materialDetail');
+  if(titleEl) titleEl.textContent=item.name;
+  if(detailEl) {
+    detailEl.innerHTML=`
+      <div class="material-hero" style="--material-a:${item.colors[0]};--material-b:${item.colors[1]}">
+        <div class="material-hero-copy"><div class="hero-material-icon">${item.icon}</div><h2>${item.name}</h2><p>${item.short}</p></div>
+        <div class="material-hero-art" aria-hidden="true">${item.icon}</div>
+      </div>
+      <h3 class="detail-section-title">Como preparar?</h3>
+      <div class="prepare-list">${item.steps.map(step=>`<article class="prepare-card"><span class="prepare-icon">${step[2]}</span><div><b>${step[0]}</b><p>${step[1]}</p></div></article>`).join('')}</div>
+      <div class="acceptance">
+        <article class="accept-card good"><span>✓</span><div><b>Pode descartar</b><p>${item.good}</p></div></article>
+        <article class="accept-card bad"><span>×</span><div><b>Evite</b><p>${item.bad}</p></div></article>
+      </div>
+      <button class="detail-cta" id="materialPoints" type="button">${ICONS.pin} Ver pontos que recebem ${item.name.toLowerCase()}</button>`;
+    $('#materialPoints')?.addEventListener('click',()=>{ state.nearbyMode=false; state.material=item.id; state.query=''; showScreen('search'); });
+  }
 }
 
 function matchMaterials(query){ const q=normalize(query); if(!q)return[]; return wasteTypes.filter(item=>normalize(item.name).includes(q)||item.aliases.some(alias=>normalize(alias).includes(q)||q.includes(normalize(alias)))); }
@@ -487,7 +491,7 @@ function filteredLocations(){
   return arr;
 }
 function thumbMarkup(){ return `<div class="point-thumb" aria-hidden="true"><i class="mini-hill"></i><i class="mini-hill b"></i><i class="mini-tree"></i><i class="mini-tree"></i><i class="mini-tree"></i></div>`; }
-function tagMarkup(id){ const m=materialById(id); return `<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`; }
+function tagMarkup(id){ const m=materialById(id); return m?`<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`:''; }
 function pointCard(loc){
   return `<article class="point-card" data-point="${loc.id}">
     <div class="point-card-top">${thumbMarkup()}<div class="point-info"><h3>${loc.name}</h3><p>${loc.address}</p><p>${loc.hours}</p></div><span class="point-distance">${ICONS.pin}${distanceLabel(loc)}</span></div>
@@ -497,24 +501,26 @@ function pointCard(loc){
 }
 function renderCityChips(){
   const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
-  $('#cityChips').innerHTML=cities.map(city=>`<button class="city-chip ${state.city===city?'active':''}" data-city="${city}" type="button">${city==='todos'?'Todos':prettyCity(city)}</button>`).join('');
-  $$('.city-chip').forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.city; renderResults(); renderFilterChoices();}));
+  const chipsEl = $('#cityChips');
+  if(!chipsEl) return;
+  chipsEl.innerHTML=cities.map(city=>`<button class="city-chip ${state.city===city?'active':''}" data-city="${city}" type="button">${city==='todos'?'Todos':prettyCity(city)}</button>`).join('');
+  $$('.city-chip', chipsEl).forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.city; renderResults(); renderFilterChoices();}));
 }
 function renderResults(){
   renderCityChips();
   const material=state.material!=='todos'?materialById(state.material):null;
-  $('#searchTitle').textContent=state.nearbyMode?'Perto de você':'Ecopontos próximos';
-  $('#searchSubtitle').textContent=state.nearbyMode&&state.userPosition
+  if($('#searchTitle')) $('#searchTitle').textContent=state.nearbyMode?'Perto de você':'Ecopontos próximos';
+  if($('#searchSubtitle')) $('#searchSubtitle').textContent=state.nearbyMode&&state.userPosition
     ? 'Pontos ordenados pela distância da sua localização'
     : material?`Locais que recebem ${material.name} na Grande Vitória`:'Encontre locais para descarte na Grande Vitória';
-  $('#resultSearch').value=state.query;
-  $('#resultSearchClear').hidden=!state.query;
+  if($('#resultSearch')) $('#resultSearch').value=state.query;
+  if($('#resultSearchClear')) $('#resultSearchClear').hidden=!state.query;
   const arr=filteredLocations();
-  $('#resultsCount').textContent=`${arr.length} ${arr.length===1?'ponto encontrado':'pontos encontrados'}`;
-  $('#pointList').innerHTML=arr.map(pointCard).join('');
-  $('#emptyPanel').hidden=arr.length>0;
+  if($('#resultsCount')) $('#resultsCount').textContent=`${arr.length} ${arr.length===1?'ponto encontrado':'pontos encontrados'}`;
+  if($('#pointList')) $('#pointList').innerHTML=arr.map(pointCard).join('');
+  if($('#emptyPanel')) $('#emptyPanel').hidden=arr.length>0;
   attachPointEvents();
-  $('#sortText').textContent=state.sort==='relevance'?'Relevância':state.sort==='distance'?'Mais próximos':'A–Z';
+  if($('#sortText')) $('#sortText').textContent=state.sort==='relevance'?'Relevância':state.sort==='distance'?'Mais próximos':'A–Z';
 }
 function attachPointEvents(){
   $$('[data-map]').forEach(btn=>btn.addEventListener('click',()=>{ state.selectedLocation=btn.dataset.map; addRecent(locationById(btn.dataset.map).name,'location',btn.dataset.map); showScreen('map'); }));
@@ -523,10 +529,13 @@ function attachPointEvents(){
 function renderMap(){
   const loc=locationById(state.selectedLocation); if(!loc){showScreen('search',{push:false});return;}
   const pad=.022, bbox=[loc.lng-pad,loc.lat-pad,loc.lng+pad,loc.lat+pad].join('%2C');
-  const iframe=$('#osmMap'); const loading=$('#mapLoading'); loading.classList.remove('loaded');
-  iframe.src=`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
-  iframe.onload=()=>loading.classList.add('loaded');
-  $('#routeCard').innerHTML=`<article class="route-summary"><div class="route-summary-top">${thumbMarkup()}<div><h2>${loc.name}</h2><p>${loc.address}</p><p>${loc.hours}</p></div><span class="route-meta">${distanceLabel(loc)}</span></div><a class="route-open" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Abrir rota no Google Maps</a></article>`;
+  const iframe=$('#osmMap'); const loading=$('#mapLoading'); 
+  if(loading) loading.classList.remove('loaded');
+  if(iframe){
+    iframe.src=`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
+    iframe.onload=()=>loading?.classList.add('loaded');
+  }
+  if($('#routeCard')) $('#routeCard').innerHTML=`<article class="route-summary"><div class="route-summary-top">${thumbMarkup()}<div><h2>${loc.name}</h2><p>${loc.address}</p><p>${loc.hours}</p></div><span class="route-meta">${distanceLabel(loc)}</span></div><a class="route-open" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Abrir rota no Google Maps</a></article>`;
 }
 
 function buildSuggestions(value){
@@ -536,16 +545,14 @@ function buildSuggestions(value){
   return [...mats,...pts];
 }
 function renderSuggestions(container,value,onSelect){
+  if(!container) return;
   const items=buildSuggestions(value); if(!items.length){container.hidden=true;return;}
   container.innerHTML=items.map(item=>`<button class="suggestion-item" type="button" data-type="${item.type}" data-id="${item.id}"><span class="suggestion-symbol">${item.icon}</span><span><b>${item.title}</b><small>${item.subtitle}</small></span><span class="suggestion-arrow">›</span></button>`).join(''); container.hidden=false;
   $$('.suggestion-item',container).forEach(btn=>btn.addEventListener('click',()=>onSelect(btn.dataset.type,btn.dataset.id)));
 }
 function handleSuggestion(type,id){
   if(typeof gtag === 'function') {
-    gtag('event', 'clique_sugestao', {
-      tipo_sugestao: type,
-      item_id: id
-    });
+    gtag('event', 'clique_sugestao', { tipo_sugestao: type, item_id: id });
   }
 
   if(type==='material'){ state.query=''; state.material=id; state.selectedMaterial=id; addRecent(materialById(id).name,'material',id); showScreen('material'); }
@@ -584,9 +591,10 @@ function requestLocation(){
 
 function renderFilterChoices(){
   const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
-  $('#filterCities').innerHTML=cities.map(c=>`<button class="choice ${state.city===c?'active':''}" data-filter-city="${c}" type="button">${c==='todos'?'Todos':prettyCity(c)}</button>`).join('');
-  $('#filterMaterials').innerHTML=`<button class="choice material-choice ${state.material==='todos'?'active':''}" data-filter-material="todos" type="button">${ICONS.leaf}Todos</button>`+wasteTypes.map(m=>`<button class="choice material-choice ${state.material===m.id?'active':''}" data-filter-material="${m.id}" type="button">${m.icon}${m.name}</button>`).join('');
-  $('#distanceRange').value=state.maxDistance; $('#distanceLabel').textContent=`Até ${state.maxDistance} km`;
+  if($('#filterCities')) $('#filterCities').innerHTML=cities.map(c=>`<button class="choice ${state.city===c?'active':''}" data-filter-city="${c}" type="button">${c==='todos'?'Todos':prettyCity(c)}</button>`).join('');
+  if($('#filterMaterials')) $('#filterMaterials').innerHTML=`<button class="choice material-choice ${state.material==='todos'?'active':''}" data-filter-material="todos" type="button">${ICONS.leaf}Todos</button>`+wasteTypes.map(m=>`<button class="choice material-choice ${state.material===m.id?'active':''}" data-filter-material="${m.id}" type="button">${m.icon}${m.name}</button>`).join('');
+  if($('#distanceRange')) $('#distanceRange').value=state.maxDistance; 
+  if($('#distanceLabel')) $('#distanceLabel').textContent=`Até ${state.maxDistance} km`;
   $$('[data-filter-city]').forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.filterCity;renderFilterChoices();}));
   $$('[data-filter-material]').forEach(btn=>btn.addEventListener('click',()=>{state.material=btn.dataset.filterMaterial;renderFilterChoices();}));
 }
@@ -606,7 +614,7 @@ function updateInstallUI(){
     guideButton.textContent=installed?'Adicionado':'Adicionar';
     guideButton.disabled=installed;
   }
-  $('#iosGuide').hidden=installed||!ios;
+  if($('#iosGuide')) $('#iosGuide').hidden=installed||!ios;
 }
 function openInstallHelp(){
   if(deferredInstallPrompt){
@@ -616,3 +624,64 @@ function openInstallHelp(){
     showToast(isIOS() ? 'Toque no ícone de Compartilhar e escolha "Adicionar à Tela Inicial".' : 'Use o menu do navegador para instalar o aplicativo.');
   }
 }
+
+// --- INICIALIZAÇÃO SEGURA DO SCRIPT ---
+document.addEventListener('DOMContentLoaded', () => {
+  renderMaterials();
+  updateInstallUI();
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    updateInstallUI();
+  });
+
+  $$('[data-nav-screen]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const screen = btn.dataset.navScreen;
+      if (['home', 'search', 'map'].includes(screen)) {
+        showScreen(screen);
+      }
+    });
+  });
+
+  const searchInput = $('#resultSearch');
+  const searchClear = $('#resultSearchClear');
+  const suggestionsBox = $('#searchSuggestions');
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      state.query = e.target.value;
+      if (searchClear) searchClear.hidden = !state.query;
+      if (suggestionsBox) renderSuggestions(suggestionsBox, state.query, handleSuggestion);
+      if (state.currentScreen === 'search') renderResults();
+    });
+
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value && suggestionsBox) {
+        renderSuggestions(suggestionsBox, searchInput.value, handleSuggestion);
+      }
+    });
+  }
+
+  if (searchClear && searchInput) {
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      state.query = '';
+      searchClear.hidden = true;
+      if (suggestionsBox) suggestionsBox.hidden = true;
+      if (state.currentScreen === 'search') renderResults();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-box-wrapper') && suggestionsBox) {
+      suggestionsBox.hidden = true;
+    }
+  });
+
+  $('#nearMeBtn')?.addEventListener('click', requestLocation);
+  $('#nearMeNav')?.addEventListener('click', requestLocation);
+  $('#installAppButton')?.addEventListener('click', openInstallHelp);
+  $('#homeInstall')?.addEventListener('click', openInstallHelp);
+});
