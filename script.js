@@ -81,899 +81,315 @@ const wasteTypes = [
   }
 ];
 
+// Pontos de Coleta Seletiva, Ecopontos e Associações da Grande Vitória - Dados Atualizados
 const locations = [
-  // ==================================================
-  // VIANA
-  // ==================================================
+  // --- VIANA ---
   {
     id: 'pev-viana-villaschi',
     name: 'Ponto de Coleta Seletiva - Arlindo Villaschi',
     city: 'Viana',
     district: 'Arlindo Ângelo Villaschi',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Bairro Arlindo Ângelo Villaschi, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Bairro Arlindo Ângelo Villaschi (Ponto Público), Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3735,
+    lng: -40.4502
   },
   {
     id: 'pev-viana-marcilio',
     name: 'Ponto de Coleta Seletiva - Marcílio de Noronha',
     city: 'Viana',
     district: 'Marcílio de Noronha',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Askim, Marcílio de Noronha, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Av. Askim (Área Central), Marcílio de Noronha, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3871,
+    lng: -40.4398
   },
   {
     id: 'pev-viana-universal',
     name: 'Ponto de Coleta Seletiva - Universal',
     city: 'Viana',
     district: 'Universal',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça Principal de Universal, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Praça Principal de Universal, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3820,
+    lng: -40.4350
   },
   {
     id: 'assoc-viana',
-    name: 'ASCAMAVI - Associação de Catadores',
+    name: 'Associação dos Catadores de Materiais Recicláveis de Viana',
     city: 'Viana',
-    district: 'Nova Bethânia',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Carajás, 01, Nova Bethânia, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    district: 'Arlindo Angelo Villaschi',
+    address: 'Av. Amazonas, Arlindo Angelo Villaschi, Viana - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.3750,
+    lng: -40.4480
   },
 
-  // ==================================================
-  // CARIACICA
-  // ==================================================
+  // --- CARIACICA ---
   {
     id: 'pev-cariacica-campo-grande',
     name: 'PEV Coleta Seletiva - Campo Grande',
     city: 'Cariacica',
     district: 'Campo Grande',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Eixo Comercial de Campo Grande, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Eixo Comercial de Campo Grande, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3410,
+    lng: -40.3830
   },
   {
     id: 'pev-cariacica-itacibai',
     name: 'PEV Coleta Seletiva - Itacibá',
     city: 'Cariacica',
     district: 'Itacibá',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça de Itacibá, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Praça de Itacibá, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3275,
+    lng: -40.3701
   },
   {
     id: 'pev-cariacica-jardim-america',
     name: 'PEV Coleta Seletiva - Jardim América',
     city: 'Cariacica',
     district: 'Jardim América',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Região de Jardim América, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Região de Jardim América / BR-262, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3228,
+    lng: -40.3592
   },
   {
     id: 'assoc-cariacica-acamarp',
-    name: 'ACAMARP - Associação de Catadores',
+    name: 'ACAMARP (Associação Beneficente de Catadores de Nova Rosa da Penha II)',
     city: 'Cariacica',
-    district: 'Nova Rosa da Penha II',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Gaspar, Nova Rosa da Penha II, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    district: 'Nova Rosa da Penha',
+    address: 'Rua Gáspar, 11 - Nova Rosa da Penha, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, das 07h00 às 17h00',
+    lat: -20.3150,
+    lng: -40.4100
   },
   {
     id: 'assoc-cariacica-flexvida',
-    name: 'FLEX VIDA - Associação de Catadores',
+    name: 'FLEX VIDA - Associação de Catadores de Materiais Recicláveis',
     city: 'Cariacica',
     district: 'Nova Canaã',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Vitória, Nova Canaã, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Vitória, 20 - Nova Canaã, Cariacica - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, das 08h00 às 17h00',
+    lat: -20.3320,
+    lng: -40.3750
   },
 
-  // ==================================================
-  // VILA VELHA
-  // ==================================================
+  // --- VILA VELHA ---
   {
     id: 'pev-vv-itapua',
     name: 'Ponto de Coleta Seletiva - Itapuã',
     city: 'Vila Velha',
     district: 'Itapuã',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3521,
+    lng: -40.2878
   },
   {
     id: 'pev-vv-praia-da-costa',
     name: 'Ponto de Coleta Seletiva - Praia da Costa',
     city: 'Vila Velha',
     district: 'Praia da Costa',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Antônio Gil Veloso, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Av. Antônio Gil Veloso (Orla), Praia da Costa, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3370,
+    lng: -40.2920
   },
   {
     id: 'pev-vv-coqueiral',
     name: 'Ponto de Coleta Seletiva - Coqueiral de Itaparica',
     city: 'Vila Velha',
     district: 'Coqueiral de Itaparica',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'oleo'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3622,
+    lng: -40.2995
   },
   {
     id: 'ecoponto-vv-guaranhuns',
     name: 'Ecoponto - Vila Guaranhuns',
     city: 'Vila Velha',
     district: 'Vila Guaranhuns',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Jussara Rodrigues Lorenzutti, 207, Vila Guaranhuns, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Jussara Rodrigues Lorenzutti, 207 - Vila Guaranhuns, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'inserviveis'],
+    hours: 'Segunda a sexta, 08h-16h30; Sábado, 07h-12h',
+    lat: -20.3780,
+    lng: -40.3120
   },
   {
     id: 'ecoponto-vv-cocal',
     name: 'Ecoponto Cocal',
     city: 'Vila Velha',
     district: 'Cocal',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Dezoito, 12, Cocal, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Dezoito, 12 - Cocal, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta, 08h-16h30; Sábado, 07h-12h30',
+    lat: -20.3700,
+    lng: -40.3050
   },
   {
     id: 'ecoponto-vv-cobilandia',
-    name: 'Ecoponto Cobilândia',
+    name: 'Ecoponto - Cobilândia (Eletrônicos e Lâmpadas)',
     city: 'Vila Velha',
     district: 'Cobilândia',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Cobilândia, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-vv-revive',
-    name: 'REVIVE - Associação de Catadores',
-    city: 'Vila Velha',
-    district: 'Vila Velha',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-
-  // ==================================================
-  // VITÓRIA
-  // ==================================================
-  {
-    id: 'pev-vix-jardim-camburi',
-    name: 'Ponto de Coleta Seletiva - Jardim Camburi',
-    city: 'Vitória',
-    district: 'Jardim Camburi',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Jardim Camburi, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-vix-praia-do-canto',
-    name: 'Ponto de Coleta Seletiva - Praia do Canto',
-    city: 'Vitória',
-    district: 'Praia do Canto',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praia do Canto, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-vix-mata-da-praia',
-    name: 'Ponto de Coleta Seletiva - Mata da Praia',
-    city: 'Vitória',
-    district: 'Mata da Praia',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Mata da Praia, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-vix-ascamare',
-    name: 'ASCAMARE - Associação de Catadores',
-    city: 'Vitória',
-    district: 'Consolação',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Construtor Camilo Gianordoli, 117, Consolação, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-vix-amariv',
-    name: 'AMARIV - Associação de Catadores',
-    city: 'Vitória',
-    district: 'Maria Ortiz',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Ouro Preto, 95, Maria Ortiz, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-
-  // ==================================================
-  // SERRA
-  // ==================================================
-  {
-    id: 'ecoponto-serra-carapina',
-    name: 'Ecoponto Jardim Carapina',
-    city: 'Serra',
-    district: 'Jardim Carapina',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Presidente Kennedy, 60, Jardim Carapina, Serra - ES',
-    materials: ['papel','plastico','metal','vidro','entulho_pequeno','moveis','eletrodomesticos','podas'],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    publicAccess: true,
-    coordinatesVerified: false
-  },
-  {
-    id: 'ecoponto-serra-colares',
-    name: 'Ecoponto Vila Nova de Colares',
-    city: 'Serra',
-    district: 'Vila Nova de Colares',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Floriano Peixoto, 353, Vila Nova de Colares, Serra - ES',
-    materials: ['papel','plastico','metal','vidro','entulho_pequeno','moveis','eletrodomesticos','podas'],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    publicAccess: true,
-    coordinatesVerified: false
-  },
-  {
-    id: 'ecoponto-serra-novo-porto-canoa',
-    name: 'Ecoponto Novo Porto Canoa',
-    city: 'Serra',
-    district: 'Novo Porto Canoa',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Avenida Domingos José Martins, 142, Novo Porto Canoa, Serra - ES',
-    materials: ['papel','plastico','metal','vidro','entulho_pequeno','moveis','eletrodomesticos','podas'],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    publicAccess: true,
-    coordinatesVerified: false
-  },
-  {
-    id: 'pev-serra-laranjeiras',
-    name: 'Ponto de Coleta Seletiva - Parque Residencial Laranjeiras',
-    city: 'Serra',
-    district: 'Parque Residencial Laranjeiras',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Parque Residencial Laranjeiras, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-serra-jacaraipe',
-    name: 'Ponto de Coleta Seletiva - Jacaraípe',
-    city: 'Serra',
-    district: 'Jacaraípe',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Jacaraípe, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-abrasol',
-    name: 'ABRASOL - Associação de Catadores',
-    city: 'Serra',
-    district: 'Serra',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-recuperalixo',
-    name: 'Recupera Lixo - Associação de Catadores',
-    city: 'Serra',
-    district: 'Serra',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  }
-];
-
-const locations = [
-  // ==================================================
-  // VIANA
-  // ==================================================
-  {
-    id: 'pev-viana-villaschi',
-    name: 'Ponto de Coleta Seletiva - Arlindo Villaschi',
-    city: 'Viana',
-    district: 'Arlindo Ângelo Villaschi',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Bairro Arlindo Ângelo Villaschi, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-viana-marcilio',
-    name: 'Ponto de Coleta Seletiva - Marcílio de Noronha',
-    city: 'Viana',
-    district: 'Marcílio de Noronha',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Askim, Marcílio de Noronha, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-viana-universal',
-    name: 'Ponto de Coleta Seletiva - Universal',
-    city: 'Viana',
-    district: 'Universal',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça Principal de Universal, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-viana',
-    name: 'ASCAMAVI - Associação de Catadores',
-    city: 'Viana',
-    district: 'Nova Bethânia',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Carajás, 01, Nova Bethânia, Viana - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-
-  // ==================================================
-  // CARIACICA
-  // ==================================================
-  {
-    id: 'pev-cariacica-campo-grande',
-    name: 'PEV Coleta Seletiva - Campo Grande',
-    city: 'Cariacica',
-    district: 'Campo Grande',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Eixo Comercial de Campo Grande, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-cariacica-itacibai',
-    name: 'PEV Coleta Seletiva - Itacibá',
-    city: 'Cariacica',
-    district: 'Itacibá',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça de Itacibá, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-cariacica-jardim-america',
-    name: 'PEV Coleta Seletiva - Jardim América',
-    city: 'Cariacica',
-    district: 'Jardim América',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Região de Jardim América, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-cariacica-acamarp',
-    name: 'ACAMARP - Associação de Catadores',
-    city: 'Cariacica',
-    district: 'Nova Rosa da Penha II',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Gaspar, Nova Rosa da Penha II, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-cariacica-flexvida',
-    name: 'FLEX VIDA - Associação de Catadores',
-    city: 'Cariacica',
-    district: 'Nova Canaã',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Vitória, Nova Canaã, Cariacica - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-
-  // ==================================================
-  // VILA VELHA
-  // ==================================================
-  {
-    id: 'pev-vv-itapua',
-    name: 'Ponto de Coleta Seletiva - Itapuã',
-    city: 'Vila Velha',
-    district: 'Itapuã',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Calçadão da Orla de Itapuã, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-vv-praia-da-costa',
-    name: 'Ponto de Coleta Seletiva - Praia da Costa',
-    city: 'Vila Velha',
-    district: 'Praia da Costa',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Antônio Gil Veloso, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-vv-coqueiral',
-    name: 'Ponto de Coleta Seletiva - Coqueiral de Itaparica',
-    city: 'Vila Velha',
-    district: 'Coqueiral de Itaparica',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça de Coqueiral de Itaparica, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'ecoponto-vv-guaranhuns',
-    name: 'Ecoponto - Vila Guaranhuns',
-    city: 'Vila Velha',
-    district: 'Vila Guaranhuns',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Jussara Rodrigues Lorenzutti, 207, Vila Guaranhuns, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'ecoponto-vv-cocal',
-    name: 'Ecoponto Cocal',
-    city: 'Vila Velha',
-    district: 'Cocal',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Rua Dezoito, 12, Cocal, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'ecoponto-vv-cobilandia',
-    name: 'Ecoponto - Cobilândia',
-    city: 'Vila Velha',
-    district: 'Cobilândia',
-    type: 'ecoponto',
-    address: null,
-    addressCandidate: 'Avenida Carlos Lindenberg, 1115, Cobilândia, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Avenida Carlos Lindenberg, 1115 - Cobilândia, Vila Velha - ES',
+    materials: ['eletronico', 'pilhas', 'baterias', 'lampadas', 'eletrodomesticos'],
+    hours: 'Segunda a sexta-feira, das 08h00 às 16h00',
+    lat: -20.3580,
+    lng: -40.3300
   },
   {
     id: 'assoc-vv-revive',
     name: 'REVIVE Associação de Catadores',
     city: 'Vila Velha',
     district: 'Novo México',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Três, Novo México, Vila Velha - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Três - Novo México, Vila Velha - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.3650,
+    lng: -40.2910
   },
 
-  // ==================================================
-  // VITÓRIA
-  // ==================================================
+  // --- VITÓRIA ---
   {
     id: 'pev-vix-jardim-camburi',
     name: 'PEV Coleta Seletiva - Jardim Camburi',
-    city: 'Vitória',
+    city: 'Vitoria',
     district: 'Jardim Camburi',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Orla de Camburi, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Orla de Camburi / Entorno do Parque Botânico, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.2590,
+    lng: -40.2650
   },
   {
     id: 'pev-vix-praia-do-canto',
     name: 'PEV Coleta Seletiva - Praia do Canto',
-    city: 'Vitória',
+    city: 'Vitoria',
     district: 'Praia do Canto',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Praça dos Namorados, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Praça dos Namorados / Reta da Penha, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.3015,
+    lng: -40.2925
   },
   {
     id: 'pev-vix-mata-da-praia',
     name: 'PEV Coleta Seletiva - Mata da Praia',
-    city: 'Vitória',
+    city: 'Vitoria',
     district: 'Mata da Praia',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Av. Dante Michelini, Mata da Praia, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.2780,
+    lng: -40.2840
   },
   {
     id: 'assoc-vix-ascamare',
-    name: 'ASCAMARE - Associação de Catadores',
-    city: 'Vitória',
+    name: 'Ascamare - Coleta Seletiva',
+    city: 'Vitoria',
     district: 'Consolação',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Construtor Camilo Gianordoli, 117, Consolação, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Construtor Camilo Gianordoli, 117 - Consolação, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.3050,
+    lng: -40.3150
   },
   {
     id: 'assoc-vix-amariv',
-    name: 'AMARIV - Associação dos Catadores da Ilha de Vitória',
-    city: 'Vitória',
+    name: 'Amariv - Associação dos Catadores da Ilha de Vitória',
+    city: 'Vitoria',
     district: 'Maria Ortiz',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Ouro Preto, 95, Maria Ortiz, Vitória - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Ouro Preto, 95 - Maria Ortiz, Vitória - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.2710,
+    lng: -40.2950
   },
 
-  // ==================================================
-  // SERRA
-  // ==================================================
+  // --- SERRA ---
   {
-    id: 'ecoponto-serra-carapina',
-    name: 'Ecoponto - Jardim Carapina',
+    id: 'pev-serra-laranjeiras',
+    name: 'PEV Coleta Seletiva - Laranjeiras',
     city: 'Serra',
-    district: 'Jardim Carapina',
-    type: 'ecoponto',
-    address: 'Rua Presidente Kennedy, 60, Jardim Carapina, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
+    district: 'Laranjeiras',
+    address: 'Av. Central (Parque Residencial Laranjeiras), Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'eletronico'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.1970,
+    lng: -40.2550
+  },
+  {
+    id: 'pev-serra-jacaraipe',
+    name: 'PEV Coleta Seletiva - Jacaraípe',
+    city: 'Serra',
+    district: 'Jacaraípe',
+    address: 'Orla de Jacaraípe, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: '24 horas (Acesso público contínuo)',
+    lat: -20.1311,
+    lng: -40.1923
   },
   {
     id: 'ecoponto-serra-colares',
     name: 'Ecoponto Quintal - Vila Nova de Colares',
     city: 'Serra',
     district: 'Vila Nova de Colares',
-    type: 'ecoponto',
-    address: 'Rua Floriano Peixoto, 353, Vila Nova de Colares, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
+    address: 'Rua Floriano Peixoto, S/N - Vila Nova de Colares, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro', 'inserviveis'],
+    hours: 'Segunda a sábado, das 06h00 às 18h00',
+    lat: -20.1450,
+    lng: -40.2310
   },
   {
-    id: 'ecoponto-serra-novo-porto-canoa',
-    name: 'Projeto João de Barro - Novo Porto Canoa',
+    id: 'ecoponto-serra-carapina',
+    name: 'Ecoponto - Jardim Carapina (Pequenos Geradores)',
     city: 'Serra',
-    district: 'Novo Porto Canoa',
-    type: 'ecoponto',
-    address: 'Avenida Domingos José Martins, 142, Novo Porto Canoa, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
-  },
-  {
-    id: 'pev-serra-laranjeiras',
-    name: 'PEV Coleta Seletiva - Laranjeiras',
-    city: 'Serra',
-    district: 'Laranjeiras',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Central, Parque Residencial Laranjeiras, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-serra-jacaraipe',
-    name: 'PEV Coleta Seletiva - Jacaraípe',
-    city: 'Serra',
-    district: 'Jacaraípe',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Jacaraípe, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    district: 'Jardim Carapina',
+    address: 'Rua Presidente Kennedy, S/N - Jardim Carapina, Serra - ES',
+    materials: ['entulho', 'residuos'],
+    hours: 'Segunda a sábado, em horário comercial',
+    lat: -20.2500,
+    lng: -40.2800
   },
   {
     id: 'assoc-serra-abrasol',
-    name: 'ABRASOL - Associação de Catadores',
-    city: 'Serra',
-    district: 'Serra',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-recuperalixo',
-    name: 'Recupera Lixo - Associação de Catadores',
-    city: 'Serra',
-    district: 'Serra',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  }
-];
-
-  {
-    id: 'pev-serra-jacaraipe',
-    name: 'PEV Coleta Seletiva - Jacaraípe',
-    city: 'Serra',
-    district: 'Jacaraípe',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Orla de Jacaraípe, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-abrasol',
-    name: 'ABRASOL - Associação de Catadores',
+    name: 'ABRASOL (Associação de Catadores de Planalto Serrano)',
     city: 'Serra',
     district: 'Planalto Serrano',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Sergipe, 254, Planalto Serrano, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Sergipe, 254 - Planalto Serrano Bloco B, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.1800,
+    lng: -40.2900
   },
   {
     id: 'assoc-serra-recuperalixo',
     name: 'Recupera Lixo',
     city: 'Serra',
     district: 'Jardim Tropical',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Assembleia de Deus, 41, Jardim Tropical, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
+    address: 'Rua Assembleia de Deus, 41 - Jardim Tropical, Serra - ES',
+    materials: ['papel', 'plastico', 'metal', 'vidro'],
+    hours: 'Segunda a sexta-feira, em horário comercial',
+    lat: -20.1700,
+    lng: -40.2750
   }
 ];
-
 const state = {
   currentScreen: 'home', previousScreen: null, selectedMaterial: null, selectedLocation: null,
   city: 'todos', material: 'todos', query: '', maxDistance: 20, userPosition: null, sort: 'relevance', nearbyMode: false,
@@ -982,42 +398,15 @@ const state = {
 let deferredInstallPrompt = null;
 let toastTimer;
 
-function normalize(text='') {
-  return text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-}
-function prettyCity(city) {
-  return normalize(city) === 'vitoria' ? 'Vitória' : city;
-}
-function materialById(id) {
-  return wasteTypes.find(item => item.id === id);
-}
-function locationById(id) {
-  return locations.find(item => item.id === id);
-}
-function routeUrl(address) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
-}
-function distanceKm(a,b) {
-  const rad=x=>x*Math.PI/180,R=6371,dLat=rad(b.lat-a.lat),dLng=rad(b.lng-a.lng),lat1=rad(a.lat),lat2=rad(b.lat);
-  const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)**2;
-  return 2*R*Math.asin(Math.sqrt(h));
-}
-function distanceLabel(loc) {
-  if(!state.userPosition) return '—';
-  const d=distanceKm(state.userPosition,loc);
-  return `${d<10?d.toFixed(1):Math.round(d)} km`;
-}
-function showToast(text) {
-  clearTimeout(toastTimer);
-  const el=$('#toast');
-  el.textContent=text;
-  el.classList.add('show');
-  toastTimer=setTimeout(()=>el.classList.remove('show'),2600);
-}
-function addRecent(label,type,id) {
-  state.recent = [{label,type,id,at:Date.now()}, ...state.recent.filter(x=>!(x.type===type && x.id===id))].slice(0,8);
-  localStorage.setItem('ecoconecta:recent',JSON.stringify(state.recent));
-}
+function normalize(text='') { return text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim(); }
+function prettyCity(city) { return city === 'Vitoria' ? 'Vitória' : city; }
+function materialById(id) { return wasteTypes.find(item => item.id === id); }
+function locationById(id) { return locations.find(item => item.id === id); }
+function routeUrl(address) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`; }
+function distanceKm(a,b){ const rad=x=>x*Math.PI/180,R=6371,dLat=rad(b.lat-a.lat),dLng=rad(b.lng-a.lng),lat1=rad(a.lat),lat2=rad(b.lat); const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+function distanceLabel(loc){ if(!state.userPosition) return '—'; const d=distanceKm(state.userPosition,loc); return `${d<10?d.toFixed(1):Math.round(d)} km`; }
+function showToast(text){ clearTimeout(toastTimer); const el=$('#toast'); el.textContent=text; el.classList.add('show'); toastTimer=setTimeout(()=>el.classList.remove('show'),2600); }
+function addRecent(label,type,id){ state.recent = [{label,type,id,at:Date.now()}, ...state.recent.filter(x=>!(x.type===type && x.id===id))].slice(0,8); localStorage.setItem('ecoconecta:recent',JSON.stringify(state.recent)); }
 
 function setActiveNav(screen){
   $$('.nav-item').forEach(btn=>btn.classList.toggle('active', btn.dataset.navScreen === screen));
@@ -1026,24 +415,17 @@ function setActiveNav(screen){
   if(['guide','about'].includes(screen)) $('[data-nav-screen="more"]')?.classList.add('active');
 }
 function showScreen(screen, {push=true}={}){
-  if(screen===state.currentScreen){
-    setActiveNav(screen);
-    if(screen==='search') renderResults();
-    return;
-  }
+  if(screen===state.currentScreen){ setActiveNav(screen); if(screen==='search') renderResults(); return; }
   if(push) state.previousScreen = state.currentScreen;
   $$('.screen').forEach(el=>el.classList.toggle('active', el.dataset.screen===screen));
   state.currentScreen = screen;
   setActiveNav(screen);
-  $('#appMain').scrollTo({top:0});
-  window.scrollTo({top:0,behavior:'instant'});
+  $('#appMain').scrollTo({top:0}); window.scrollTo({top:0,behavior:'instant'});
   if(screen==='search') renderResults();
   if(screen==='material') renderMaterialDetail();
   if(screen==='map') renderMap();
 }
-function goBack(){
-  showScreen(state.previousScreen || 'home',{push:false});
-}
+function goBack(){ showScreen(state.previousScreen || 'home',{push:false}); }
 
 function renderMaterials(){
   const grid=$('#materialGrid');
@@ -1087,363 +469,77 @@ function renderMaterialDetail(){
   $('#materialPoints').addEventListener('click',()=>{ state.nearbyMode=false; state.material=item.id; state.query=''; showScreen('search'); });
 }
 
-function matchMaterials(query){
-  const q=normalize(query);
-  if(!q)return[];
-  return wasteTypes.filter(item=>normalize(item.name).includes(q)||item.aliases.some(alias=>normalize(alias).includes(q)||q.includes(normalize(alias))));
-}
-
+function matchMaterials(query){ const q=normalize(query); if(!q)return[]; return wasteTypes.filter(item=>normalize(item.name).includes(q)||item.aliases.some(alias=>normalize(alias).includes(q)||q.includes(normalize(alias)))); }
 function filteredLocations(){
-  const q = normalize(state.query);
-  const matchedIds = matchMaterials(q).map(x => x.id);
-
-  let arr = locations.filter(loc => {
-    // A comparação normalizada evita divergências entre Vitória e Vitoria.
-    const cityOk = state.city === 'todos' ||
-      normalize(loc.city) === normalize(state.city);
-
-    // Pontos sem materiais cadastrados continuam visíveis como pendentes,
-    // mas o cartão informa que a aceitação daquele material não foi confirmada.
-    const materialOk = state.material === 'todos' ||
-      loc.materials.includes(state.material) ||
-      (loc.status === 'pending' && (!loc.materials || loc.materials.length === 0));
-
-    const materialNames = (loc.materials || [])
-      .map(id => materialById(id)?.name || '')
-      .join(' ');
-    const text = normalize(`${loc.name} ${loc.city} ${prettyCity(loc.city)} ${loc.district} ${loc.address || ''} ${loc.addressCandidate || ''} ${materialNames}`);
-    const queryOk = !q || text.includes(q) ||
-      matchedIds.some(id => (loc.materials || []).includes(id));
-
-    const hasCoordinates = loc.lat !== null && loc.lng !== null &&
-      Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng));
-    const dist = state.userPosition && hasCoordinates
-      ? distanceKm(state.userPosition, loc)
-      : null;
-    // Locais sem coordenadas não são descartados: ficam ao final da lista.
-    const distOk = !state.userPosition || dist === null || dist <= state.maxDistance;
-
-    return cityOk && materialOk && queryOk && distOk;
+  const q=normalize(state.query), matchedIds=matchMaterials(q).map(x=>x.id);
+  let arr=locations.filter(loc=>{
+    const cityOk=state.city==='todos'||loc.city===state.city;
+    const materialOk=state.material==='todos'||loc.materials.includes(state.material);
+    const text=normalize(`${loc.name} ${loc.city} ${prettyCity(loc.city)} ${loc.district} ${loc.address} ${loc.materials.map(x=>materialById(x)?.name).join(' ')}`);
+    const queryOk=!q||text.includes(q)||matchedIds.some(id=>loc.materials.includes(id));
+    const dist=state.userPosition?distanceKm(state.userPosition,loc):0;
+    const distOk=!state.userPosition||dist<=state.maxDistance;
+    return cityOk&&materialOk&&queryOk&&distOk;
   });
-
-  if (state.sort === 'distance' && state.userPosition) {
-    arr.sort((a, b) => {
-      const validA = a.lat !== null && a.lng !== null &&
-        Number.isFinite(Number(a.lat)) && Number.isFinite(Number(a.lng));
-      const validB = b.lat !== null && b.lng !== null &&
-        Number.isFinite(Number(b.lat)) && Number.isFinite(Number(b.lng));
-      if (validA !== validB) return validA ? -1 : 1;
-      if (!validA) return a.name.localeCompare(b.name, 'pt-BR');
-      return distanceKm(state.userPosition, a) - distanceKm(state.userPosition, b);
-    });
-  } else if (state.sort === 'alpha') {
-    arr.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
-  } else if (state.material !== 'todos') {
-    arr.sort((a, b) => Number((b.materials || []).includes(state.material)) -
-      Number((a.materials || []).includes(state.material)));
-  }
-
+  if(state.sort==='distance'&&state.userPosition) arr.sort((a,b)=>distanceKm(state.userPosition,a)-distanceKm(state.userPosition,b));
+  else if(state.sort==='alpha') arr.sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  else if(state.material!=='todos') arr.sort((a,b)=>Number(b.materials.includes(state.material))-Number(a.materials.includes(state.material)));
   return arr;
 }
-
-  // ==================================================
-  // SERRA
-  // ==================================================
-  {
-    id: 'ecoponto-serra-carapina',
-    name: 'Ecoponto - Jardim Carapina',
-    city: 'Serra',
-    district: 'Jardim Carapina',
-    type: 'ecoponto',
-    address: 'Rua Presidente Kennedy, 60, Jardim Carapina, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
-  },
-  {
-    id: 'ecoponto-serra-colares',
-    name: 'Ecoponto Quintal - Vila Nova de Colares',
-    city: 'Serra',
-    district: 'Vila Nova de Colares',
-    type: 'ecoponto',
-    address: 'Rua Floriano Peixoto, 353, Vila Nova de Colares, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
-  },
-  {
-    id: 'ecoponto-serra-novo-porto-canoa',
-    name: 'Projeto João de Barro - Novo Porto Canoa',
-    city: 'Serra',
-    district: 'Novo Porto Canoa',
-    type: 'ecoponto',
-    address: 'Avenida Domingos José Martins, 142, Novo Porto Canoa, Serra - ES',
-    materials: [
-      'papel', 'plastico', 'metal', 'vidro',
-      'entulho_pequeno', 'moveis',
-      'eletrodomesticos', 'podas'
-    ],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'verified',
-    coordinatesVerified: false,
-    publicAccess: true
-  },
-  {
-    id: 'pev-serra-laranjeiras',
-    name: 'PEV Coleta Seletiva - Laranjeiras',
-    city: 'Serra',
-    district: 'Laranjeiras',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Av. Central, Parque Residencial Laranjeiras, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'pev-serra-jacaraipe',
-    name: 'PEV Coleta Seletiva - Jacaraípe',
-    city: 'Serra',
-    district: 'Jacaraípe',
-    type: 'pev',
-    address: null,
-    addressCandidate: 'Orla de Jacaraípe, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-abrasol',
-    name: 'ABRASOL - Associação de Catadores',
-    city: 'Serra',
-    district: 'Planalto Serrano',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Sergipe, 254, Planalto Serrano, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  },
-  {
-    id: 'assoc-serra-recuperalixo',
-    name: 'Recupera Lixo',
-    city: 'Serra',
-    district: 'Jardim Tropical',
-    type: 'associacao',
-    address: null,
-    addressCandidate: 'Rua Assembleia de Deus, 41, Jardim Tropical, Serra - ES',
-    materials: [],
-    hours: null,
-    lat: null,
-    lng: null,
-    status: 'pending'
-  }
-];
-
-function thumbMarkup(){
-  return `<div class="point-thumb" aria-hidden="true"><i class="mini-hill"></i><i class="mini-hill b"></i><i class="mini-tree"></i><i class="mini-tree"></i><i class="mini-tree"></i></div>`;
-}
-
-function tagMarkup(id){
-  const m=materialById(id);
-  return `<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`;
-}
-
+function thumbMarkup(){ return `<div class="point-thumb" aria-hidden="true"><i class="mini-hill"></i><i class="mini-hill b"></i><i class="mini-tree"></i><i class="mini-tree"></i><i class="mini-tree"></i></div>`; }
+function tagMarkup(id){ const m=materialById(id); return `<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`; }
 function pointCard(loc){
-  const hasAddress = Boolean(loc.address);
-  const hasCoordinates = loc.coordinatesVerified === true &&
-    loc.lat !== null && loc.lng !== null &&
-    Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng));
-  const hasMaterials = Array.isArray(loc.materials) && loc.materials.length > 0;
-
-  const addressText = hasAddress
-    ? loc.address
-    : `${loc.district || 'Localidade não informada'} — ${prettyCity(loc.city)}`;
-
-  const statusText = loc.status === 'verified'
-    ? 'Ponto cadastrado'
-    : 'Informações em validação';
-
-  const materialText = hasMaterials
-    ? loc.materials.slice(0,4).map(tagMarkup).join('')
-    : '<span class="tag">Materiais em confirmação</span>';
-
   return `<article class="point-card" data-point="${loc.id}">
-    <div class="point-card-top">
-      ${thumbMarkup()}
-      <div class="point-info">
-        <h3>${loc.name}</h3>
-        <p>${addressText}</p>
-        <p>${loc.hours || 'Horário ainda não confirmado'}</p>
-        <small>${statusText}</small>
-      </div>
-      <span class="point-distance">${ICONS.pin}${hasCoordinates ? distanceLabel(loc) : '—'}</span>
-    </div>
-    <div class="tag-row">${materialText}</div>
-    <div class="point-actions">
-      ${hasCoordinates
-        ? `<button class="map-btn" data-map="${loc.id}" type="button">${ICONS.map} Ver mapa</button>`
-        : '<span class="point-pending">Mapa indisponível</span>'}
-      ${hasAddress
-        ? `<a class="route-btn" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Traçar rota</a>`
-        : '<span class="point-pending">Rota indisponível</span>'}
-    </div>
+    <div class="point-card-top">${thumbMarkup()}<div class="point-info"><h3>${loc.name}</h3><p>${loc.address}</p><p>${loc.hours}</p></div><span class="point-distance">${ICONS.pin}${distanceLabel(loc)}</span></div>
+    <div class="tag-row">${loc.materials.slice(0,4).map(tagMarkup).join('')}</div>
+    <div class="point-actions"><button class="map-btn" data-map="${loc.id}" type="button">${ICONS.map} Ver mapa</button><a class="route-btn" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Traçar rota</a></div>
   </article>`;
 }
-
 function renderCityChips(){
-  const cities=['todos','Vitória','Vila Velha','Serra','Cariacica','Viana'];
+  const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
   $('#cityChips').innerHTML=cities.map(city=>`<button class="city-chip ${state.city===city?'active':''}" data-city="${city}" type="button">${city==='todos'?'Todos':prettyCity(city)}</button>`).join('');
-  $$('.city-chip').forEach(btn=>btn.addEventListener('click',()=>{
-    state.city=btn.dataset.city;
-    renderResults();
-    renderFilterChoices();
-  }));
+  $$('.city-chip').forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.city; renderResults(); renderFilterChoices();}));
 }
-
 function renderResults(){
   renderCityChips();
-
   const material=state.material!=='todos'?materialById(state.material):null;
-
   $('#searchTitle').textContent=state.nearbyMode?'Perto de você':'Ecopontos próximos';
-
   $('#searchSubtitle').textContent=state.nearbyMode&&state.userPosition
     ? 'Pontos ordenados pela distância da sua localização'
     : material?`Locais que recebem ${material.name} na Grande Vitória`:'Encontre locais para descarte na Grande Vitória';
-
   $('#resultSearch').value=state.query;
   $('#resultSearchClear').hidden=!state.query;
-
   const arr=filteredLocations();
-
   $('#resultsCount').textContent=`${arr.length} ${arr.length===1?'ponto encontrado':'pontos encontrados'}`;
   $('#pointList').innerHTML=arr.map(pointCard).join('');
   $('#emptyPanel').hidden=arr.length>0;
-
   attachPointEvents();
-
-  $('#sortText').textContent=state.sort==='relevance'
-    ? 'Relevância'
-    : state.sort==='distance'
-      ? 'Mais próximos'
-      : 'A–Z';
+  $('#sortText').textContent=state.sort==='relevance'?'Relevância':state.sort==='distance'?'Mais próximos':'A–Z';
 }
-
 function attachPointEvents(){
-  $$('[data-map]').forEach(btn=>btn.addEventListener('click',()=>{
-    state.selectedLocation=btn.dataset.map;
-    addRecent(locationById(btn.dataset.map).name,'location',btn.dataset.map);
-    showScreen('map');
-  }));
+  $$('[data-map]').forEach(btn=>btn.addEventListener('click',()=>{ state.selectedLocation=btn.dataset.map; addRecent(locationById(btn.dataset.map).name,'location',btn.dataset.map); showScreen('map'); }));
 }
 
 function renderMap(){
-  const loc = locationById(state.selectedLocation);
-
-  if (!loc) {
-    showScreen('search', {push:false});
-    return;
-  }
-
-  const hasCoordinates = loc.coordinatesVerified === true &&
-    loc.lat !== null && loc.lng !== null &&
-    Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng));
-
-  if (!hasCoordinates) {
-    showToast('A localização deste ponto ainda não foi confirmada.');
-    showScreen('search', {push:false});
-    return;
-  }
-
-  const pad = .022;
-  const bbox = [loc.lng-pad, loc.lat-pad, loc.lng+pad, loc.lat+pad].join('%2C');
-
-  const iframe = $('#osmMap');
-  const loading = $('#mapLoading');
-
-  loading.classList.remove('loaded');
-
-  iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
-  iframe.onload = () => loading.classList.add('loaded');
-
-  const route = loc.address
-    ? `<a class="route-open" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Abrir rota no Google Maps</a>`
-    : '<p>Endereço para rota ainda não confirmado.</p>';
-
-  $('#routeCard').innerHTML = `<article class="route-summary"><div class="route-summary-top">${thumbMarkup()}<div><h2>${loc.name}</h2><p>${loc.address || loc.district}</p><p>${loc.hours || 'Horário ainda não confirmado'}</p></div><span class="route-meta">${distanceLabel(loc)}</span></div>${route}</article>`;
+  const loc=locationById(state.selectedLocation); if(!loc){showScreen('search',{push:false});return;}
+  const pad=.022, bbox=[loc.lng-pad,loc.lat-pad,loc.lng+pad,loc.lat+pad].join('%2C');
+  const iframe=$('#osmMap'); const loading=$('#mapLoading'); loading.classList.remove('loaded');
+  iframe.src=`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
+  iframe.onload=()=>loading.classList.add('loaded');
+  $('#routeCard').innerHTML=`<article class="route-summary"><div class="route-summary-top">${thumbMarkup()}<div><h2>${loc.name}</h2><p>${loc.address}</p><p>${loc.hours}</p></div><span class="route-meta">${distanceLabel(loc)}</span></div><a class="route-open" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Abrir rota no Google Maps</a></article>`;
 }
 
 function buildSuggestions(value){
-  const q=normalize(value);
-  if(!q)return[];
-
-  const mats=wasteTypes
-    .filter(m=>normalize(m.name).includes(q)||m.aliases.some(a=>normalize(a).includes(q)))
-    .slice(0,4)
-    .map(m=>({
-      type:'material',
-      id:m.id,
-      title:m.name,
-      subtitle:'Ver como descartar',
-      icon:m.icon
-    }));
-
-  const pts=locations
-    .filter(l=>normalize(`${l.name} ${l.district} ${prettyCity(l.city)}`).includes(q))
-    .slice(0,4)
-    .map(l=>({
-      type:'location',
-      id:l.id,
-      title:l.name,
-      subtitle:`${l.district} • ${prettyCity(l.city)}${l.status === 'pending' ? ' • em validação' : ''}`,
-      icon:ICONS.pin
-    }));
-
+  const q=normalize(value); if(!q)return[];
+  const mats=wasteTypes.filter(m=>normalize(m.name).includes(q)||m.aliases.some(a=>normalize(a).includes(q))).slice(0,4).map(m=>({type:'material',id:m.id,title:m.name,subtitle:'Ver como descartar',icon:m.icon}));
+  const pts=locations.filter(l=>normalize(`${l.name} ${l.district} ${prettyCity(l.city)}`).includes(q)).slice(0,4).map(l=>({type:'location',id:l.id,title:l.name,subtitle:`${l.district} • ${prettyCity(l.city)}`,icon:ICONS.pin}));
   return [...mats,...pts];
 }
-
 function renderSuggestions(container,value,onSelect){
-  const items=buildSuggestions(value);
-
-  if(!items.length){
-    container.hidden=true;
-    return;
-  }
-
-  container.innerHTML=items.map(item=>`<button class="suggestion-item" type="button" data-type="${item.type}" data-id="${item.id}"><span class="suggestion-symbol">${item.icon}</span><span><b>${item.title}</b><small>${item.subtitle}</small></span><span class="suggestion-arrow">›</span></button>`).join('');
-
-  container.hidden=false;
-
-  $$('.suggestion-item',container).forEach(btn=>btn.addEventListener('click',()=>{
-    onSelect(btn.dataset.type,btn.dataset.id);
-  }));
+  const items=buildSuggestions(value); if(!items.length){container.hidden=true;return;}
+  container.innerHTML=items.map(item=>`<button class="suggestion-item" type="button" data-type="${item.type}" data-id="${item.id}"><span class="suggestion-symbol">${item.icon}</span><span><b>${item.title}</b><small>${item.subtitle}</small></span><span class="suggestion-arrow">›</span></button>`).join(''); container.hidden=false;
+  $$('.suggestion-item',container).forEach(btn=>btn.addEventListener('click',()=>onSelect(btn.dataset.type,btn.dataset.id)));
 }
-
 function handleSuggestion(type,id){
   // Evento GA4: Clique em sugestão inteligente
   if(typeof gtag === 'function') {
@@ -1453,20 +549,8 @@ function handleSuggestion(type,id){
     });
   }
 
-  if(type==='material'){
-    state.query='';
-    state.material=id;
-    state.selectedMaterial=id;
-    addRecent(materialById(id).name,'material',id);
-    showScreen('material');
-  } else {
-    const loc=locationById(id);
-    state.nearbyMode=false;
-    state.query=loc.district;
-    state.material='todos';
-    addRecent(loc.name,'location',id);
-    showScreen('search');
-  }
+  if(type==='material'){ state.query=''; state.material=id; state.selectedMaterial=id; addRecent(materialById(id).name,'material',id); showScreen('material'); }
+  else { const loc=locationById(id); state.nearbyMode=false; state.query=loc.district; state.material='todos'; addRecent(loc.name,'location',id); showScreen('search'); }
 }
 
 function openNearbyResults(){
@@ -1476,32 +560,20 @@ function openNearbyResults(){
   state.query='';
   state.sort='distance';
   state.maxDistance=30;
-
   showScreen('search');
   renderResults();
   renderFilterChoices();
 }
-
 function requestLocation(){
   if(state.userPosition){
     openNearbyResults();
     showToast('Mostrando os pontos mais próximos de você.');
     return;
   }
-
-  if(!navigator.geolocation){
-    showToast('Este navegador não oferece geolocalização.');
-    return;
-  }
-
+  if(!navigator.geolocation){showToast('Este navegador não oferece geolocalização.');return;}
   showToast('Solicitando sua localização…');
-
   navigator.geolocation.getCurrentPosition(pos=>{
-    state.userPosition={
-      lat:pos.coords.latitude,
-      lng:pos.coords.longitude
-    };
-
+    state.userPosition={lat:pos.coords.latitude,lng:pos.coords.longitude};
     openNearbyResults();
     showToast('Localização ativada. Pontos ordenados por proximidade.');
   },()=>{
@@ -1512,206 +584,94 @@ function requestLocation(){
 }
 
 function renderFilterChoices(){
-  const cities=['todos','Vitória','Vila Velha','Serra','Cariacica','Viana'];
-
+  const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
   $('#filterCities').innerHTML=cities.map(c=>`<button class="choice ${state.city===c?'active':''}" data-filter-city="${c}" type="button">${c==='todos'?'Todos':prettyCity(c)}</button>`).join('');
-
   $('#filterMaterials').innerHTML=`<button class="choice material-choice ${state.material==='todos'?'active':''}" data-filter-material="todos" type="button">${ICONS.leaf}Todos</button>`+wasteTypes.map(m=>`<button class="choice material-choice ${state.material===m.id?'active':''}" data-filter-material="${m.id}" type="button">${m.icon}${m.name}</button>`).join('');
-
-  $('#distanceRange').value=state.maxDistance;
-  $('#distanceLabel').textContent=`Até ${state.maxDistance} km`;
-
-  $$('[data-filter-city]').forEach(btn=>btn.addEventListener('click',()=>{
-    state.city=btn.dataset.filterCity;
-    renderFilterChoices();
-  }));
-
-  $$('[data-filter-material]').forEach(btn=>btn.addEventListener('click',()=>{
-    state.material=btn.dataset.filterMaterial;
-    renderFilterChoices();
-  }));
+  $('#distanceRange').value=state.maxDistance; $('#distanceLabel').textContent=`Até ${state.maxDistance} km`;
+  $$('[data-filter-city]').forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.filterCity;renderFilterChoices();}));
+  $$('[data-filter-material]').forEach(btn=>btn.addEventListener('click',()=>{state.material=btn.dataset.filterMaterial;renderFilterChoices();}));
 }
 
 // PWA
-function isStandalone(){
-  return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-}
-
-function isIOS(){
-  return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-}
-
+function isStandalone(){return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;}
+function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
 function updateInstallUI(){
-  const installed=isStandalone();
-  const ios=isIOS();
-
+  const installed=isStandalone(); const ios=isIOS();
   const homeButton=$('#homeInstall');
   const homeCard=$('#homeInstallCard');
   const guideButton=$('#installAppButton');
-
   if(homeButton) homeButton.hidden=installed;
   if(homeCard) homeCard.hidden=installed;
-
   if(guideButton){
     guideButton.hidden=false;
     guideButton.textContent=installed?'Adicionado':'Adicionar';
     guideButton.disabled=installed;
   }
-
   $('#iosGuide').hidden=installed||!ios;
 }
-
 function openInstallHelp(){
   const dialog=$('#installDialog');
   const steps=$('#installSteps');
   const title=$('#installDialogTitle');
   const text=$('#installDialogText');
   const primary=$('#installPrimary');
-
   if(isIOS()){
     title.textContent='Adicionar no iPhone ou iPad';
     text.textContent='No Safari, você pode salvar o EcoConecta na Tela de Início para abrir como um aplicativo.';
-
     steps.innerHTML='<li><span>1</span><div><b>Abra no Safari</b><p>Se estiver em outro navegador, abra esta página no Safari.</p></div></li><li><span>2</span><div><b>Toque em Compartilhar</b><p>Use o ícone de compartilhamento do Safari.</p></div></li><li><span>3</span><div><b>Adicionar à Tela de Início</b><p>Confirme o nome EcoConecta e toque em Adicionar.</p></div></li>';
-
     primary.textContent='Entendi';
     primary.dataset.action='close';
   }else{
     title.textContent='Salvar EcoConecta no celular';
     text.textContent='Seu navegador não exibiu a instalação automática. Você ainda pode criar um atalho pela opção de instalar/adicionar à tela inicial do navegador.';
-
     steps.innerHTML='<li><span>1</span><div><b>Abra o menu do navegador</b><p>Normalmente é o botão ⋮ ou o menu de opções.</p></div></li><li><span>2</span><div><b>Procure a opção de instalação</b><p>Ela pode aparecer como “Instalar app” ou “Adicionar à tela inicial”.</p></div></li><li><span>3</span><div><b>Confirme</b><p>O ícone do EcoConecta ficará junto aos seus aplicativos.</p></div></li>';
-
     primary.textContent='Entendi';
     primary.dataset.action='close';
   }
-
-  if(typeof dialog.showModal==='function'){
-    dialog.showModal();
-  } else {
-    showToast('Use o menu do navegador para adicionar o EcoConecta à tela inicial.');
-  }
+  if(typeof dialog.showModal==='function') dialog.showModal(); else showToast('Use o menu do navegador para adicionar o EcoConecta à tela inicial.');
 }
-
 async function requestInstall(){
-  if(isStandalone()){
-    showToast('O EcoConecta já está salvo neste dispositivo.');
-    return;
-  }
-
-  if(isIOS()){
-    openInstallHelp();
-    return;
-  }
-
-  if(!deferredInstallPrompt){
-    openInstallHelp();
-    return;
-  }
-
+  if(isStandalone()){showToast('O EcoConecta já está salvo neste dispositivo.');return;}
+  if(isIOS()){openInstallHelp();return;}
+  if(!deferredInstallPrompt){openInstallHelp();return;}
   deferredInstallPrompt.prompt();
-
   const choice=await deferredInstallPrompt.userChoice;
   deferredInstallPrompt=null;
-
   updateInstallUI();
-
-  if(choice.outcome==='accepted'){
-    showToast('EcoConecta adicionado ao dispositivo.');
-  }
+  if(choice.outcome==='accepted') showToast('EcoConecta adicionado ao dispositivo.');
 }
 
 // event wiring
-renderMaterials();
-renderFilterChoices();
-
+renderMaterials(); renderFilterChoices();
 $$('[data-nav-screen]').forEach(btn=>btn.addEventListener('click',()=>{
   state.nearbyMode=false;
   showScreen(btn.dataset.navScreen);
 }));
-
 $$('[data-back]').forEach(btn=>btn.addEventListener('click',goBack));
-
 $('#nearMeNav').addEventListener('click',requestLocation);
 $('#moreGuide').addEventListener('click',()=>showScreen('guide'));
 $('#moreInstall').addEventListener('click',requestInstall);
 $('#moreAbout').addEventListener('click',()=>showScreen('about'));
 $('#howHome').addEventListener('click',()=>showScreen('guide'));
 $('#ecoBanner').addEventListener('click',()=>openMaterial('plastico'));
-
-$('#allMaterials').addEventListener('click',()=>{
-  state.nearbyMode=false;
-  state.material='todos';
-  state.query='';
-  showScreen('search');
-});
-
-$('#openFiltersTop').addEventListener('click',()=>{
-  renderFilterChoices();
-  $('#filterDialog').showModal();
-});
-
-$('#distanceRange').addEventListener('input',e=>{
-  $('#distanceLabel').textContent=`Até ${e.target.value} km`;
-});
-
-$('#filterForm').addEventListener('submit',()=>{
-  state.maxDistance=Number($('#distanceRange').value);
-  setTimeout(renderResults,0);
-});
-
-$('#clearFilter').addEventListener('click',()=>{
-  state.city='todos';
-  state.material='todos';
-  state.maxDistance=20;
-  renderFilterChoices();
-});
-
-$('#resetSearchFilters').addEventListener('click',()=>{
-  state.city='todos';
-  state.material='todos';
-  state.query='';
-  state.maxDistance=20;
-  renderResults();
-});
-
-$('#sortResults').addEventListener('click',()=>{
-  const order=state.userPosition
-    ? ['relevance','distance','alpha']
-    : ['relevance','alpha'];
-
-  state.sort=order[(order.indexOf(state.sort)+1)%order.length];
-  renderResults();
-});
-
-$('#homeInstall').addEventListener('click',requestInstall);
-$('#homeInstallAction').addEventListener('click',requestInstall);
-$('#installAppButton').addEventListener('click',requestInstall);
-
+$('#allMaterials').addEventListener('click',()=>{state.nearbyMode=false;state.material='todos';state.query='';showScreen('search');});
+$('#openFiltersTop').addEventListener('click',()=>{renderFilterChoices();$('#filterDialog').showModal();});
+$('#distanceRange').addEventListener('input',e=>{$('#distanceLabel').textContent=`Até ${e.target.value} km`;});
+$('#filterForm').addEventListener('submit',()=>{state.maxDistance=Number($('#distanceRange').value);setTimeout(renderResults,0);});
+$('#clearFilter').addEventListener('click',()=>{state.city='todos';state.material='todos';state.maxDistance=20;renderFilterChoices();});
+$('#resetSearchFilters').addEventListener('click',()=>{state.city='todos';state.material='todos';state.query='';state.maxDistance=20;renderResults();});
+$('#sortResults').addEventListener('click',()=>{ const order=state.userPosition?['relevance','distance','alpha']:['relevance','alpha']; state.sort=order[(order.indexOf(state.sort)+1)%order.length]; renderResults(); });
+$('#homeInstall').addEventListener('click',requestInstall); $('#homeInstallAction').addEventListener('click',requestInstall); $('#installAppButton').addEventListener('click',requestInstall);
 $('#installClose').addEventListener('click',()=>$('#installDialog').close());
 $('#installPrimary').addEventListener('click',()=>$('#installDialog').close());
-
-$('#installDialog').addEventListener('click',e=>{
-  if(e.target===$('#installDialog'))$('#installDialog').close();
-});
+$('#installDialog').addEventListener('click',e=>{if(e.target===$('#installDialog'))$('#installDialog').close();});
 
 function connectSearch(input, clearBtn, suggestions, mode){
   input.addEventListener('input',()=>{
-    const value=input.value;
-    clearBtn.hidden=!value;
-
-    renderSuggestions(suggestions,value,(type,id)=>{
-      suggestions.hidden=true;
-      handleSuggestion(type,id);
-    });
-
-    if(mode==='results'){
-      state.nearbyMode=false;
-      state.query=value;
-      renderResults();
-    }
+    const value=input.value; clearBtn.hidden=!value;
+    renderSuggestions(suggestions,value,(type,id)=>{suggestions.hidden=true;handleSuggestion(type,id);});
+    if(mode==='results'){state.nearbyMode=false;state.query=value;renderResults();}
   });
-
   input.addEventListener('keydown',e=>{
     if(e.key==='Enter'){
       e.preventDefault();
@@ -1726,45 +686,21 @@ function connectSearch(input, clearBtn, suggestions, mode){
       }
 
       const match=matchMaterials(input.value)[0];
-
-      if(mode==='home'&&match){
-        openMaterial(match.id);
-      } else {
-        state.nearbyMode=false;
-        state.material='todos';
-        showScreen('search');
-        renderResults();
-      }
-
+      if(mode==='home'&&match){openMaterial(match.id);}
+      else{state.nearbyMode=false;state.material='todos';showScreen('search');renderResults();}
       suggestions.hidden=true;
     }
   });
-
-  clearBtn.addEventListener('click',()=>{
-    input.value='';
-    clearBtn.hidden=true;
-    suggestions.hidden=true;
-
-    if(mode==='results'){
-      state.nearbyMode=false;
-      state.query='';
-      renderResults();
-    }
-
-    input.focus();
-  });
+  clearBtn.addEventListener('click',()=>{input.value='';clearBtn.hidden=true;suggestions.hidden=true;if(mode==='results'){state.nearbyMode=false;state.query='';renderResults();}input.focus();});
 }
-
 connectSearch($('#homeSearch'),$('#homeSearchClear'),$('#homeSuggestions'),'home');
 connectSearch($('#resultSearch'),$('#resultSearchClear'),$('#resultSuggestions'),'results');
-
 document.addEventListener('click',e=>{
   if(!$('#homeSearchWrap').contains(e.target))$('#homeSuggestions').hidden=true;
   if(!$('#resultSearchWrap').contains(e.target))$('#resultSuggestions').hidden=true;
 
   // Eventos GA4: Interações com Ecopontos (Mapa e Rotas)
   const routeBtn = e.target.closest('.route-btn, .route-open');
-
   if (routeBtn && typeof gtag === 'function') {
     gtag('event', 'tracar_rota', {
       destino_url: routeBtn.href
@@ -1772,7 +708,6 @@ document.addEventListener('click',e=>{
   }
 
   const mapBtn = e.target.closest('[data-map]');
-
   if (mapBtn && typeof gtag === 'function') {
     gtag('event', 'ver_mapa_ecoponto', {
       ponto_id: mapBtn.dataset.map
@@ -1780,45 +715,22 @@ document.addEventListener('click',e=>{
   }
 });
 
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();
-  deferredInstallPrompt=e;
-  updateInstallUI();
-});
-
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
-  updateInstallUI();
-  showToast('EcoConecta instalado com sucesso.');
-});
-
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;updateInstallUI();});
+window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;updateInstallUI();showToast('EcoConecta instalado com sucesso.');});
 const canSW=location.protocol==='https:'||['localhost','127.0.0.1'].includes(location.hostname);
-
-if('serviceWorker'in navigator&&canSW){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
-  });
-}
-
+if('serviceWorker'in navigator&&canSW) window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
 updateInstallUI();
 
 const splash = $('#splash');
 const splashEnter = $('#splashEnter');
-
 if (splash && splashEnter) {
   splashEnter.addEventListener('click', () => {
     splash.classList.add('hide');
     splash.setAttribute('aria-hidden', 'true');
-
     setTimeout(() => {
       splash.remove();
-
       const firstInteractive = $('#homeSearch');
-
-      if (firstInteractive) {
-        firstInteractive.focus({ preventScroll: true });
-      }
+      if (firstInteractive) firstInteractive.focus({ preventScroll: true });
     }, 460);
   });
 }
-
