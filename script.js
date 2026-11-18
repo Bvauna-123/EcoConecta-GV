@@ -414,6 +414,7 @@ function setActiveNav(screen){
   $('#nearMeNav')?.classList.toggle('active', screen === 'search' && state.nearbyMode);
   if(['guide','about'].includes(screen)) $('[data-nav-screen="more"]')?.classList.add('active');
 }
+
 function showScreen(screen, {push=true}={}){
   if(screen===state.currentScreen){ setActiveNav(screen); if(screen==='search') renderResults(); return; }
   if(push) state.previousScreen = state.currentScreen;
@@ -425,6 +426,7 @@ function showScreen(screen, {push=true}={}){
   if(screen==='material') renderMaterialDetail();
   if(screen==='map') renderMap();
 }
+
 function goBack(){ showScreen(state.previousScreen || 'home',{push:false}); }
 
 function renderMaterials(){
@@ -435,6 +437,7 @@ function renderMaterials(){
   $$('.material-card[data-material]',grid).forEach(btn=>btn.addEventListener('click',()=>openMaterial(btn.dataset.material)));
   $('[data-all]',grid)?.addEventListener('click',()=>{ state.material='todos'; state.query=''; showScreen('search'); });
 }
+
 function openMaterial(id){
   state.selectedMaterial=id;
   state.material=id;
@@ -474,6 +477,7 @@ function renderMaterialDetail(){
 }
 
 function matchMaterials(query){ const q=normalize(query); if(!q)return[]; return wasteTypes.filter(item=>normalize(item.name).includes(q)||item.aliases.some(alias=>normalize(alias).includes(q)||q.includes(normalize(alias)))); }
+
 function filteredLocations(){
   const q=normalize(state.query), matchedIds=matchMaterials(q).map(x=>x.id);
   let arr=locations.filter(loc=>{
@@ -490,8 +494,10 @@ function filteredLocations(){
   else if(state.material!=='todos') arr.sort((a,b)=>Number(b.materials.includes(state.material))-Number(a.materials.includes(state.material)));
   return arr;
 }
+
 function thumbMarkup(){ return `<div class="point-thumb" aria-hidden="true"><i class="mini-hill"></i><i class="mini-hill b"></i><i class="mini-tree"></i><i class="mini-tree"></i><i class="mini-tree"></i></div>`; }
 function tagMarkup(id){ const m=materialById(id); return m?`<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`:''; }
+
 function pointCard(loc){
   return `<article class="point-card" data-point="${loc.id}">
     <div class="point-card-top">${thumbMarkup()}<div class="point-info"><h3>${loc.name}</h3><p>${loc.address}</p><p>${loc.hours}</p></div><span class="point-distance">${ICONS.pin}${distanceLabel(loc)}</span></div>
@@ -499,6 +505,7 @@ function pointCard(loc){
     <div class="point-actions"><button class="map-btn" data-map="${loc.id}" type="button">${ICONS.map} Ver mapa</button><a class="route-btn" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Traçar rota</a></div>
   </article>`;
 }
+
 function renderCityChips(){
   const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
   const chipsEl = $('#cityChips');
@@ -506,6 +513,7 @@ function renderCityChips(){
   chipsEl.innerHTML=cities.map(city=>`<button class="city-chip ${state.city===city?'active':''}" data-city="${city}" type="button">${city==='todos'?'Todos':prettyCity(city)}</button>`).join('');
   $$('.city-chip', chipsEl).forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.city; renderResults(); renderFilterChoices();}));
 }
+
 function renderResults(){
   renderCityChips();
   const material=state.material!=='todos'?materialById(state.material):null;
@@ -522,6 +530,7 @@ function renderResults(){
   attachPointEvents();
   if($('#sortText')) $('#sortText').textContent=state.sort==='relevance'?'Relevância':state.sort==='distance'?'Mais próximos':'A–Z';
 }
+
 function attachPointEvents(){
   $$('[data-map]').forEach(btn=>btn.addEventListener('click',()=>{ state.selectedLocation=btn.dataset.map; addRecent(locationById(btn.dataset.map).name,'location',btn.dataset.map); showScreen('map'); }));
 }
@@ -544,12 +553,14 @@ function buildSuggestions(value){
   const pts=locations.filter(l=>normalize(`${l.name} ${l.district} ${prettyCity(l.city)}`).includes(q)).slice(0,4).map(l=>({type:'location',id:l.id,title:l.name,subtitle:`${l.district} • ${prettyCity(l.city)}`,icon:ICONS.pin}));
   return [...mats,...pts];
 }
+
 function renderSuggestions(container,value,onSelect){
   if(!container) return;
   const items=buildSuggestions(value); if(!items.length){container.hidden=true;return;}
   container.innerHTML=items.map(item=>`<button class="suggestion-item" type="button" data-type="${item.type}" data-id="${item.id}"><span class="suggestion-symbol">${item.icon}</span><span><b>${item.title}</b><small>${item.subtitle}</small></span><span class="suggestion-arrow">›</span></button>`).join(''); container.hidden=false;
   $$('.suggestion-item',container).forEach(btn=>btn.addEventListener('click',()=>onSelect(btn.dataset.type,btn.dataset.id)));
 }
+
 function handleSuggestion(type,id){
   if(typeof gtag === 'function') {
     gtag('event', 'clique_sugestao', { tipo_sugestao: type, item_id: id });
@@ -570,6 +581,7 @@ function openNearbyResults(){
   renderResults();
   renderFilterChoices();
 }
+
 function requestLocation(){
   if(state.userPosition){
     openNearbyResults();
@@ -616,19 +628,50 @@ function updateInstallUI(){
   }
   if($('#iosGuide')) $('#iosGuide').hidden=installed||!ios;
 }
+
 function openInstallHelp(){
+  const dialog = $('#installDialog');
+  if (dialog && typeof dialog.showModal === 'function') {
+    renderInstallDialogSteps();
+    dialog.showModal();
+    return;
+  }
   if(deferredInstallPrompt){
     deferredInstallPrompt.prompt();
     deferredInstallPrompt.userChoice.then(()=>{ deferredInstallPrompt=null; updateInstallUI(); });
   } else {
-    showToast(isIOS() ? 'Toque no ícone de Compartilhar e escolha "Adicionar à Tela Inicial".' : 'Use o menu do navegador para instalar o aplicativo.');
+    showToast(isIOS() ? 'Toque em Compartilhar e escolha "Adicionar à Tela de Início".' : 'Use o menu do navegador para instalar o aplicativo.');
   }
 }
 
-// --- INICIALIZAÇÃO SEGURA DO SCRIPT ---
+function renderInstallDialogSteps(){
+  const stepsList = $('#installSteps');
+  if(!stepsList) return;
+  const ios = isIOS();
+  if(ios){
+    stepsList.innerHTML = `
+      <li><span>1</span><div><b>Toque no botão Compartilhar</b><p>Na barra inferior ou superior do Safari, toque no ícone de compartilhamento.</p></div></li>
+      <li><span>2</span><div><b>Selecione "Adicionar à Tela de Início"</b><p>Role as opções do menu até encontrar e selecionar esta alternativa.</p></div></li>
+      <li><span>3</span><div><b>Confirme em "Adicionar"</b><p>O ícone do EcoConecta GV aparecerá na sua tela inicial como um app.</p></div></li>
+    `;
+  } else {
+    stepsList.innerHTML = `
+      <li><span>1</span><div><b>Abra o menu do navegador</b><p>Toque nos três pontos (canto superior direito) do Chrome ou navegador.</p></div></li>
+      <li><span>2</span><div><b>Selecione "Instalar aplicativo" ou "Adicionar à tela inicial"</b><p>Confirme a instalação para ter acesso rápido direto no celular.</p></div></li>
+    `;
+  }
+}
+
+// --- INICIALIZAÇÃO SEGURA E COMPLETA DO SCRIPT ---
 document.addEventListener('DOMContentLoaded', () => {
   renderMaterials();
   updateInstallUI();
+
+  // 1. Tela de Splash inicial ("Entrar no EcoConecta")
+  const splash = $('#splash');
+  $('#splashEnter')?.addEventListener('click', () => {
+    if(splash) splash.classList.add('hide');
+  });
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
@@ -636,52 +679,155 @@ document.addEventListener('DOMContentLoaded', () => {
     updateInstallUI();
   });
 
+  // 2. Navegação inferior (Bottom Nav / Menu)
   $$('[data-nav-screen]').forEach(btn => {
     btn.addEventListener('click', () => {
       const screen = btn.dataset.navScreen;
-      if (['home', 'search', 'map'].includes(screen)) {
+      if (['home', 'search', 'map', 'guide', 'more', 'about'].includes(screen)) {
         showScreen(screen);
       }
     });
   });
 
-  const searchInput = $('#resultSearch');
-  const searchClear = $('#resultSearchClear');
-  const suggestionsBox = $('#searchSuggestions');
+  // 3. Botões de Voltar ([data-back])
+  $$('[data-back]').forEach(btn => {
+    btn.addEventListener('click', () => goBack());
+  });
 
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
+  // 4. Atalhos da Tela Inicial
+  $('#howHome')?.addEventListener('click', () => showScreen('guide'));
+  $('#moreGuide')?.addEventListener('click', () => showScreen('guide'));
+  $('#allMaterials')?.addEventListener('click', () => {
+    state.material = 'todos';
+    state.query = '';
+    showScreen('search');
+  });
+  $('#ecoBanner')?.addEventListener('click', () => {
+    state.material = 'plastico';
+    state.query = '';
+    showScreen('material');
+  });
+  $('#moreAbout')?.addEventListener('click', () => showScreen('about'));
+  $('#moreInstall')?.addEventListener('click', openInstallHelp);
+
+  // 5. Barra de Pesquisa Principal (Home)
+  const homeSearch = $('#homeSearch');
+  const homeSearchClear = $('#homeSearchClear');
+  const homeSuggestions = $('#homeSuggestions');
+
+  if (homeSearch) {
+    homeSearch.addEventListener('input', (e) => {
+      const val = e.target.value;
+      if(homeSearchClear) homeSearchClear.hidden = !val;
+      if(homeSuggestions) renderSuggestions(homeSuggestions, val, (type, id) => {
+        handleSuggestion(type, id);
+        if(homeSuggestions) homeSuggestions.hidden = true;
+      });
+    });
+    homeSearch.addEventListener('focus', () => {
+      if(homeSearch.value && homeSuggestions) renderSuggestions(homeSuggestions, homeSearch.value, (type, id) => {
+        handleSuggestion(type, id);
+        homeSuggestions.hidden = true;
+      });
+    });
+  }
+
+  if (homeSearchClear && homeSearch) {
+    homeSearchClear.addEventListener('click', () => {
+      homeSearch.value = '';
+      homeSearchClear.hidden = true;
+      if(homeSuggestions) homeSuggestions.hidden = true;
+    });
+  }
+
+  // 6. Barra de Pesquisa de Resultados (Search)
+  const resultSearch = $('#resultSearch');
+  const resultSearchClear = $('#resultSearchClear');
+  const resultSuggestions = $('#resultSuggestions');
+
+  if (resultSearch) {
+    resultSearch.addEventListener('input', (e) => {
       state.query = e.target.value;
-      if (searchClear) searchClear.hidden = !state.query;
-      if (suggestionsBox) renderSuggestions(suggestionsBox, state.query, handleSuggestion);
-      if (state.currentScreen === 'search') renderResults();
+      if(resultSearchClear) resultSearchClear.hidden = !state.query;
+      if(resultSuggestions) renderSuggestions(resultSuggestions, state.query, handleSuggestion);
+      if(state.currentScreen === 'search') renderResults();
     });
-
-    searchInput.addEventListener('focus', () => {
-      if (searchInput.value && suggestionsBox) {
-        renderSuggestions(suggestionsBox, searchInput.value, handleSuggestion);
-      }
+    resultSearch.addEventListener('focus', () => {
+      if(resultSearch.value && resultSuggestions) renderSuggestions(resultSuggestions, resultSearch.value, handleSuggestion);
     });
   }
 
-  if (searchClear && searchInput) {
-    searchClear.addEventListener('click', () => {
-      searchInput.value = '';
+  if (resultSearchClear && resultSearch) {
+    resultSearchClear.addEventListener('click', () => {
+      resultSearch.value = '';
       state.query = '';
-      searchClear.hidden = true;
-      if (suggestionsBox) suggestionsBox.hidden = true;
-      if (state.currentScreen === 'search') renderResults();
+      resultSearchClear.hidden = true;
+      if(resultSuggestions) resultSuggestions.hidden = true;
+      if(state.currentScreen === 'search') renderResults();
     });
   }
 
+  // Fecha sugestões ao clicar fora
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.search-box-wrapper') && suggestionsBox) {
-      suggestionsBox.hidden = true;
+    if (!e.target.closest('.smart-search')) {
+      if(homeSuggestions) homeSuggestions.hidden = true;
+      if(resultSuggestions) resultSuggestions.hidden = true;
     }
   });
 
+  // 7. Filtros e Diálogo de Filtros
+  const filterDialog = $('#filterDialog');
+  $('#openFiltersTop')?.addEventListener('click', () => {
+    renderFilterChoices();
+    if(filterDialog && typeof filterDialog.showModal === 'function') filterDialog.showModal();
+  });
+
+  $('#filterForm']?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const range = $('#distanceRange');
+    if(range) state.maxDistance = Number(range.value);
+    if(filterDialog) filterDialog.close();
+    renderResults();
+  });
+
+  $('#clearFilter')?.addEventListener('click', () => {
+    state.city = 'todos';
+    state.material = 'todos';
+    state.maxDistance = 20;
+    renderFilterChoices();
+  });
+
+  $('#resetSearchFilters')?.addEventListener('click', () => {
+    state.city = 'todos';
+    state.material = 'todos';
+    state.query = '';
+    state.nearbyMode = false;
+    renderResults();
+  });
+
+  const distanceRange = $('#distanceRange');
+  const distanceLabel = $('#distanceLabel');
+  distanceRange?.addEventListener('input', (e) => {
+    if(distanceLabel) distanceLabel.textContent = `Até ${e.target.value} km`;
+  });
+
+  // 8. Botão de Ordenação
+  $('#sortResults')?.addEventListener('click', () => {
+    if(state.sort === 'relevance') state.sort = 'distance';
+    else if(state.sort === 'distance') state.sort = 'alpha';
+    else state.sort = 'relevance';
+    renderResults();
+    showToast(`Ordenando por: ${$('#sortText').textContent}`);
+  });
+
+  // 9. Geolocalização e Instalação
   $('#nearMeBtn')?.addEventListener('click', requestLocation);
   $('#nearMeNav')?.addEventListener('click', requestLocation);
   $('#installAppButton')?.addEventListener('click', openInstallHelp);
   $('#homeInstall')?.addEventListener('click', openInstallHelp);
+  $('#homeInstallAction')?.addEventListener('click', openInstallHelp);
+  $('#moreInstall')?.addEventListener('click', openInstallHelp);
+
+  $('#installClose')?.addEventListener('click', () => $('#installDialog')?.close());
+  $('#installPrimary')?.addEventListener('click', () => $('#installDialog')?.close());
 });
