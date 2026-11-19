@@ -257,7 +257,19 @@ function materialById(id) { return wasteTypes.find(item => item.id === id); }
 function locationById(id) { return locations.find(item => item.id === id); }
 function routeUrl(address) { return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`; }
 function distanceKm(a,b){ const rad=x=>x*Math.PI/180,R=6371,dLat=rad(b.lat-a.lat),dLng=rad(b.lng-a.lng),lat1=rad(a.lat),lat2=rad(b.lat); const h=Math.sin(dLat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLng/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
-function distanceLabel(loc){ if(!state.userPosition) return '—'; const d=distanceKm(state.userPosition,loc); return `${d<10?d.toFixed(1):Math.round(d)} km`; }
+
+function distanceLabel(loc) {
+  if (!state.userPosition || loc.lat == null || loc.lng == null) {
+    return 'Não disponível';
+  }
+
+  const d = distanceKm(state.userPosition, loc);
+  return `${d < 10 ? d.toFixed(1) : Math.round(d)} km`;
+}
+
+function hasCoordinates(loc) {
+  return Number.isFinite(loc.lat) && Number.isFinite(loc.lng);
+}
 function showToast(text){ clearTimeout(toastTimer); const el=$('#toast'); el.textContent=text; el.classList.add('show'); toastTimer=setTimeout(()=>el.classList.remove('show'),2600); }
 function addRecent(label,type,id){ state.recent = [{label,type,id,at:Date.now()}, ...state.recent.filter(x=>!(x.type===type && x.id===id))].slice(0,8); localStorage.setItem('ecoconecta:recent',JSON.stringify(state.recent)); }
 
@@ -316,26 +328,57 @@ function filteredLocations(){
     const materialOk=state.material==='todos'||loc.materials.includes(state.material);
     const text=normalize(`${loc.name} ${loc.city} ${prettyCity(loc.city)} ${loc.district} ${loc.address} ${loc.materials.map(x=>materialById(x)?.name).join(' ')}`);
     const queryOk=!q||text.includes(q)||matchedIds.some(id=>loc.materials.includes(id));
-    const dist=state.userPosition?distanceKm(state.userPosition,loc):0;
-    const distOk=!state.userPosition||dist<=state.maxDistance;
-    return cityOk&&materialOk&&queryOk&&distOk;
+    const dist = state.userPosition && hasCoordinates(loc)
+    ? distanceKm(state.userPosition, loc)
+    : null;
+
+    
+const distOk = !state.userPosition ||
+  dist === null ||
+  dist <= state.maxDistance;
+
+  
+if (state.sort === 'distance' && state.userPosition) {
+  arr.sort((a, b) => {
+    const da = hasCoordinates(a)
+      ? distanceKm(state.userPosition, a)
+      : Infinity;
+
+    const db = hasCoordinates(b)
+      ? distanceKm(state.userPosition, b)
+      : Infinity;
+
+    return da - db;
   });
-  if(state.sort==='distance'&&state.userPosition) arr.sort((a,b)=>distanceKm(state.userPosition,a)-distanceKm(state.userPosition,b));
-  else if(state.sort==='alpha') arr.sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
-  else if(state.material!=='todos') arr.sort((a,b)=>Number(b.materials.includes(state.material))-Number(a.materials.includes(state.material)));
-  return arr;
 }
+
 function thumbMarkup(){ return `<div class="point-thumb" aria-hidden="true"><i class="mini-hill"></i><i class="mini-hill b"></i><i class="mini-tree"></i><i class="mini-tree"></i><i class="mini-tree"></i></div>`; }
 function tagMarkup(id){ const m=materialById(id); return `<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`; }
 function pointCard(loc){
   return `<article class="point-card" data-point="${loc.id}">
     <div class="point-card-top">${thumbMarkup()}<div class="point-info"><h3>${loc.name}</h3><p>${loc.address}</p><p>${loc.hours}</p></div><span class="point-distance">${ICONS.pin}${distanceLabel(loc)}</span></div>
-    <div class="tag-row">${loc.materials.slice(0,4).map(tagMarkup).join('')}</div>
+    
+<div class="tag-row">
+  ${loc.materials.length
+    ? loc.materials.map(tagMarkup).join('')
+    : '<span class="tag">Materiais a confirmar</span>'}
+</div>
+
     <div class="point-actions"><button class="map-btn" data-map="${loc.id}" type="button">${ICONS.map} Ver mapa</button><a class="route-btn" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Traçar rota</a></div>
   </article>`;
 }
 function renderCityChips(){
-  const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
+  
+const cities = [
+  'todos',
+  'Vitoria',
+  'Vila Velha',
+  'Serra',
+  'Cariacica',
+  'Viana',
+  'Guarapari'
+];
+
   $('#cityChips').innerHTML=cities.map(city=>`<button class="city-chip ${state.city===city?'active':''}" data-city="${city}" type="button">${city==='todos'?'Todos':prettyCity(city)}</button>`).join('');
   $$('.city-chip').forEach(btn=>btn.addEventListener('click',()=>{state.city=btn.dataset.city; renderResults(); renderFilterChoices();}));
 }
@@ -359,13 +402,72 @@ function attachPointEvents(){
   $$('[data-map]').forEach(btn=>btn.addEventListener('click',()=>{ state.selectedLocation=btn.dataset.map; addRecent(locationById(btn.dataset.map).name,'location',btn.dataset.map); showScreen('map'); }));
 }
 
-function renderMap(){
-  const loc=locationById(state.selectedLocation); if(!loc){showScreen('search',{push:false});return;}
-  const pad=.022, bbox=[loc.lng-pad,loc.lat-pad,loc.lng+pad,loc.lat+pad].join('%2C');
-  const iframe=$('#osmMap'); const loading=$('#mapLoading'); loading.classList.remove('loaded');
-  iframe.src=`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
-  iframe.onload=()=>loading.classList.add('loaded');
-  $('#routeCard').innerHTML=`<article class="route-summary"><div class="route-summary-top">${thumbMarkup()}<div><h2>${loc.name}</h2><p>${loc.address}</p><p>${loc.hours}</p></div><span class="route-meta">${distanceLabel(loc)}</span></div><a class="route-open" href="${routeUrl(loc.address)}" target="_blank" rel="noopener">${ICONS.route} Abrir rota no Google Maps</a></article>`;
+
+function renderMap() {
+  const loc = locationById(state.selectedLocation);
+
+  if (!loc) {
+    showScreen('search', { push: false });
+    return;
+  }
+
+  const iframe = $('#osmMap');
+  const loading = $('#mapLoading');
+
+  loading.classList.remove('loaded');
+
+  if (hasCoordinates(loc)) {
+    iframe.hidden = false;
+    loading.hidden = false;
+
+    const pad = 0.022;
+    const bbox = [
+      loc.lng - pad,
+      loc.lat - pad,
+      loc.lng + pad,
+      loc.lat + pad
+    ].join('%2C');
+
+    iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
+
+    iframe.onload = () => loading.classList.add('loaded');
+  } else {
+    iframe.hidden = true;
+    loading.hidden = true;
+  }
+
+  const materialsHTML = loc.materials.length
+    ? loc.materials.map(tagMarkup).join('')
+    : '<p>Consulte o estabelecimento para confirmar os materiais recebidos.</p>';
+
+  const mapLink = hasCoordinates(loc)
+    ? routeUrl(loc.address)
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`;
+
+  $('#routeCard').innerHTML = `
+    <article class="route-summary">
+      <div class="route-summary-top">
+        ${thumbMarkup()}
+        <div>
+          <h2>${loc.name}</h2>
+          <p>${loc.type || 'Ponto de coleta'}</p>
+          <p>${loc.address}</p>
+          <p>${loc.hours}</p>
+          ${loc.phone ? `<p>Telefone: ${loc.phone}</p>` : ''}
+        </div>
+        <span class="route-meta">${distanceLabel(loc)}</span>
+      </div>
+
+      <div class="tag-row">${materialsHTML}</div>
+
+      <a class="route-open"
+         href="${mapLink}"
+         target="_blank"
+         rel="noopener">
+        ${ICONS.route} Abrir localização no Google Maps
+      </a>
+    </article>
+  `;
 }
 
 function buildSuggestions(value){
@@ -415,7 +517,17 @@ function requestLocation(){
 }
 
 function renderFilterChoices(){
-  const cities=['todos','Vitoria','Vila Velha','Serra','Cariacica','Viana'];
+  
+const cities = [
+  'todos',
+  'Vitoria',
+  'Vila Velha',
+  'Serra',
+  'Cariacica',
+  'Viana',
+  'Guarapari'
+];
+
   $('#filterCities').innerHTML=cities.map(c=>`<button class="choice ${state.city===c?'active':''}" data-filter-city="${c}" type="button">${c==='todos'?'Todos':prettyCity(c)}</button>`).join('');
   $('#filterMaterials').innerHTML=`<button class="choice material-choice ${state.material==='todos'?'active':''}" data-filter-material="todos" type="button">${ICONS.leaf}Todos</button>`+wasteTypes.map(m=>`<button class="choice material-choice ${state.material===m.id?'active':''}" data-filter-material="${m.id}" type="button">${m.icon}${m.name}</button>`).join('');
   $('#distanceRange').value=state.maxDistance; $('#distanceLabel').textContent=`Até ${state.maxDistance} km`;
