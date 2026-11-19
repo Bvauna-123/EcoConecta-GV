@@ -33,19 +33,19 @@
 <body>
   <div class="desktop-backdrop" aria-hidden="true"></div>
 
-  <<div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="splashTitle" aria-describedby="splashText">
-  <div class="splash-orb splash-orb-a"></div>
-  <div class="splash-orb splash-orb-b"></div>
-  <div class="splash-logo" aria-hidden="true">
-    <span class="logo-ring"><span class="logo-leaf"></span></span>
+  <div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="splashTitle" aria-describedby="splashText">
+    <div class="splash-orb splash-orb-a"></div>
+    <div class="splash-orb splash-orb-b"></div>
+    <div class="splash-logo" aria-hidden="true">
+      <span class="logo-ring"><span class="logo-leaf"></span></span>
+    </div>
+    <h1 id="splashTitle">EcoConecta <span>GV</span></h1>
+    <p id="splashText">Descartar bem conecta pessoas, cidades e um futuro mais verde.</p>
+    <button class="splash-enter" id="splashEnter" type="button">
+      <span>Entrar no EcoConecta</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5"/></svg>
+    </button>
   </div>
-  <h1 id="splashTitle">EcoConecta <span>GV</span></h1>
-  <p id="splashText">Descartar bem conecta pessoas, cidades e um futuro mais verde.</p>
-  <button class="splash-enter" id="splashEnter" type="button">
-    <span>Entrar no EcoConecta</span>
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5"/></svg>
-  </button>
-</div>
 
   <div class="app" id="app">
     <main class="app-main" id="appMain">
@@ -231,7 +231,7 @@
           <article><span>02</span><div><b>Busca por ecopontos</b><p>Permite filtrar locais por município, material e proximidade.</p></div></article>
           <article><span>03</span><div><b>Experiência mobile</b><p>Interface otimizada para celular e instalação como PWA na tela inicial.</p></div></article>
         </div>
-        <div class="mvp-warning"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><p><b>Versão de demonstração.</b> Os ecopontos cadastrados nesta versão são fictícios e deverão ser substituídos por dados oficiais validados antes da publicação.</p></div>
+        <div class="mvp-warning"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><p><b>Versão de demonstração.</b> Os ecopontos cadastrados nesta versão devem ser conferidos quanto a horários, aceitação de materiais e dados oficiais antes da publicação final.</p></div>
       </section>
     </main>
 
@@ -254,7 +254,7 @@
   <dialog class="filter-dialog" id="filterDialog">
     <form method="dialog" class="filter-sheet" id="filterForm">
       <div class="sheet-handle"></div>
-      <div class="filter-head"><div><span class="overline">REFINAR BUSCA</span><h2>Filtrar resultados</h2></div><button value="cancel" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button></div>
+      <div class="filter-head"><div><span class="overline">REFINAR BUSCA</span><h2>Filtrar resultados</h2></div><button value="cancel" type="button" id="closeFilterDialog" aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></button></div>
 
       <fieldset><legend>Município</legend><div class="choice-grid" id="filterCities"></div></fieldset>
       <fieldset><legend>Material aceito</legend><div class="choice-grid materials" id="filterMaterials"></div></fieldset>
@@ -263,7 +263,6 @@
       <button class="clear-filter" id="clearFilter" type="button">Limpar tudo</button>
     </form>
   </dialog>
-
 
   <dialog class="install-dialog" id="installDialog">
     <div class="install-sheet">
