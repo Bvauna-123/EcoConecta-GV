@@ -641,3 +641,1003 @@ if (splash && splashEnter) {
     }, 460);
   });
 }
+const state = {
+  currentScreen: 'home',
+  previousScreen: null,
+  selectedMaterial: null,
+  selectedLocation: null,
+  city: 'todos',
+  material: 'todos',
+  query: '',
+  maxDistance: 20,
+  userPosition: null,
+  sort: 'relevance',
+  nearbyMode: false,
+  recent: (() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('ecoconecta:recent') || '[]');
+      return Array.isArray(saved) ? saved : [];
+    } catch {
+      return [];
+    }
+  })()
+};
+
+let deferredInstallPrompt = null;
+let toastTimer;
+
+function normalize(text = '') {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function prettyCity(city) {
+  return city === 'Vitoria' ? 'Vitória' : city;
+}
+
+function materialById(id) {
+  return wasteTypes.find(item => item.id === id);
+}
+
+function locationById(id) {
+  return locations.find(item => item.id === id);
+}
+
+function routeUrl(address) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+}
+
+function distanceKm(a, b) {
+  const rad = x => x * Math.PI / 180;
+  const R = 6371;
+  const dLat = rad(b.lat - a.lat);
+  const dLng = rad(b.lng - a.lng);
+  const lat1 = rad(a.lat);
+  const lat2 = rad(b.lat);
+
+  const h = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+function distanceLabel(loc) {
+  if (!state.userPosition || loc.lat == null || loc.lng == null) {
+    return 'Não disponível';
+  }
+
+  const d = distanceKm(state.userPosition, loc);
+  return `${d < 10 ? d.toFixed(1) : Math.round(d)} km`;
+}
+
+function hasCoordinates(loc) {
+  return Number.isFinite(loc.lat) && Number.isFinite(loc.lng);
+}
+
+function showToast(text) {
+  clearTimeout(toastTimer);
+  const el = $('#toast');
+  el.textContent = text;
+  el.classList.add('show');
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+function addRecent(label, type, id) {
+  state.recent = [
+    { label, type, id, at: Date.now() },
+    ...state.recent.filter(x => !(x.type === type && x.id === id))
+  ].slice(0, 8);
+
+  try {
+    localStorage.setItem('ecoconecta:recent', JSON.stringify(state.recent));
+  } catch (error) {
+    console.warn('Não foi possível salvar o histórico:', error);
+  }
+}
+
+function setActiveNav(screen) {
+  $$('.nav-item').forEach(btn =>
+    btn.classList.toggle('active', btn.dataset.navScreen === screen)
+  );
+
+  $('.home-main-nav')?.classList.toggle('active', screen === 'home');
+
+  $('#nearMeNav')?.classList.toggle(
+    'active',
+    screen === 'search' && state.nearbyMode
+  );
+
+  if (['guide', 'about'].includes(screen)) {
+    $('[data-nav-screen="more"]')?.classList.add('active');
+  }
+}
+
+function showScreen(screen, { push = true } = {}) {
+  if (screen === state.currentScreen) {
+    setActiveNav(screen);
+    if (screen === 'search') renderResults();
+    return;
+  }
+
+  if (push) state.previousScreen = state.currentScreen;
+
+  $$('.screen').forEach(el =>
+    el.classList.toggle('active', el.dataset.screen === screen)
+  );
+
+  state.currentScreen = screen;
+  setActiveNav(screen);
+
+  $('#appMain')?.scrollTo({ top: 0 });
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  if (screen === 'search') renderResults();
+  if (screen === 'material') renderMaterialDetail();
+  if (screen === 'map') renderMap();
+}
+
+function goBack() {
+  showScreen(state.previousScreen || 'home', { push: false });
+}
+
+function renderMaterials() {
+  const grid = $('#materialGrid');
+
+  grid.innerHTML = wasteTypes.map((item, index) => `
+    <button class="material-card ${index === 6 ? 'wide' : ''}"
+      type="button"
+      data-material="${item.id}"
+      style="--material-bg:${item.tint};--material-color:${item.color};--material-tint:${item.tint}">
+      <span class="material-icon">${item.icon}</span>
+      <strong>${item.name}</strong>
+    </button>
+  `).join('') + `
+    <button class="material-card"
+      type="button"
+      data-all="true"
+      style="--material-bg:#eef8ec;--material-color:#27973b;--material-tint:#eef8ec">
+      <span class="material-icon">${ICONS.leaf}</span>
+      <strong>Outros materiais</strong>
+    </button>
+  `;
+
+  $$('.material-card[data-material]', grid).forEach(btn => {
+    btn.addEventListener('click', () => openMaterial(btn.dataset.material));
+  });
+
+  $('[data-all]', grid)?.addEventListener('click', () => {
+    state.material = 'todos';
+    state.query = '';
+    showScreen('search');
+  });
+}
+
+function openMaterial(id) {
+  state.selectedMaterial = id;
+  state.material = id;
+  addRecent(materialById(id).name, 'material', id);
+  showScreen('material');
+}
+
+function renderMaterialDetail() {
+  const item = materialById(state.selectedMaterial || state.material);
+
+  if (!item) {
+    showScreen('home', { push: false });
+    return;
+  }
+
+  $('#materialTitle').textContent = item.name;
+
+  $('#materialDetail').innerHTML = `
+    <div class="material-hero" style="--material-a:${item.colors[0]};--material-b:${item.colors[1]}">
+      <div class="material-hero-copy">
+        <div class="hero-material-icon">${item.icon}</div>
+        <h2>${item.name}</h2>
+        <p>${item.short}</p>
+      </div>
+      <div class="material-hero-art" aria-hidden="true">${item.icon}</div>
+    </div>
+
+    <h3 class="detail-section-title">Como preparar?</h3>
+
+    <div class="prepare-list">
+      ${item.steps.map(step => `
+        <article class="prepare-card">
+          <span class="prepare-icon">${step[2]}</span>
+          <div>
+            <b>${step[0]}</b>
+            <p>${step[1]}</p>
+          </div>
+        </article>
+      `).join('')}
+    </div>
+
+    <div class="acceptance">
+      <article class="accept-card good">
+        <span>✓</span>
+        <div><b>Pode descartar</b><p>${item.good}</p></div>
+      </article>
+      <article class="accept-card bad">
+        <span>×</span>
+        <div><b>Evite</b><p>${item.bad}</p></div>
+      </article>
+    </div>
+
+    <button class="detail-cta" id="materialPoints" type="button">
+      ${ICONS.pin} Ver pontos que recebem ${item.name.toLowerCase()}
+    </button>
+  `;
+
+  $('#materialPoints').addEventListener('click', () => {
+    state.nearbyMode = false;
+    state.material = item.id;
+    state.query = '';
+    showScreen('search');
+  });
+}
+
+function matchMaterials(query) {
+  const q = normalize(query);
+  if (!q) return [];
+
+  return wasteTypes.filter(item =>
+    normalize(item.name).includes(q) ||
+    item.aliases.some(alias =>
+      normalize(alias).includes(q) || q.includes(normalize(alias))
+    )
+  );
+}
+
+function filteredLocations() {
+  const q = normalize(state.query);
+  const matchedIds = matchMaterials(q).map(item => item.id);
+
+  const arr = locations.filter(loc => {
+    const cityOk = state.city === 'todos' || loc.city === state.city;
+
+    const materialOk =
+      state.material === 'todos' ||
+      loc.materials.includes(state.material);
+
+    const text = normalize(`
+      ${loc.name}
+      ${loc.city}
+      ${prettyCity(loc.city)}
+      ${loc.district}
+      ${loc.address}
+      ${loc.materials.map(id => materialById(id)?.name || '').join(' ')}
+    `);
+
+    const queryOk =
+      !q ||
+      text.includes(q) ||
+      matchedIds.some(id => loc.materials.includes(id));
+
+    const dist = state.userPosition && hasCoordinates(loc)
+      ? distanceKm(state.userPosition, loc)
+      : null;
+
+    // Pontos sem coordenadas continuam aparecendo,
+    // mas não recebem distância fictícia.
+    const distOk =
+      !state.userPosition ||
+      dist === null ||
+      dist <= state.maxDistance;
+
+    return cityOk && materialOk && queryOk && distOk;
+  });
+
+  if (state.sort === 'distance' && state.userPosition) {
+    arr.sort((a, b) => {
+      const da = hasCoordinates(a)
+        ? distanceKm(state.userPosition, a)
+        : Infinity;
+
+      const db = hasCoordinates(b)
+        ? distanceKm(state.userPosition, b)
+        : Infinity;
+
+      return da - db;
+    });
+  } else if (state.sort === 'alpha') {
+    arr.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  }
+
+  return arr;
+}
+
+function thumbMarkup() {
+  return `
+    <div class="point-thumb" aria-hidden="true">
+      <i class="mini-hill"></i>
+      <i class="mini-hill b"></i>
+      <i class="mini-tree"></i>
+      <i class="mini-tree"></i>
+      <i class="mini-tree"></i>
+    </div>
+  `;
+}
+
+function tagMarkup(id) {
+  const m = materialById(id);
+  if (!m) return '';
+
+  return `<span class="tag" style="--tag-color:${m.color}">${m.icon}${m.name}</span>`;
+}
+
+function pointCard(loc) {
+  return `
+    <article class="point-card" data-point="${loc.id}">
+      <div class="point-card-top">
+        ${thumbMarkup()}
+        <div class="point-info">
+          <h3>${loc.name}</h3>
+          <p>${loc.address}</p>
+          <p>${loc.hours}</p>
+        </div>
+        <span class="point-distance">${ICONS.pin}${distanceLabel(loc)}</span>
+      </div>
+
+      <div class="tag-row">
+        ${loc.materials.length
+          ? loc.materials.map(tagMarkup).join('')
+          : '<span class="tag">Materiais a confirmar</span>'}
+      </div>
+
+      <div class="point-actions">
+        <button class="map-btn" data-map="${loc.id}" type="button">
+          ${ICONS.map} Ver mapa
+        </button>
+        <a class="route-btn"
+          href="${routeUrl(loc.address)}"
+          target="_blank"
+          rel="noopener">
+          ${ICONS.route} Traçar rota
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function renderCityChips() {
+  const cities = [
+    'todos',
+    'Vitoria',
+    'Vila Velha',
+    'Serra',
+    'Cariacica',
+    'Viana',
+    'Guarapari'
+  ];
+
+  $('#cityChips').innerHTML = cities.map(city => `
+    <button class="city-chip ${state.city === city ? 'active' : ''}"
+      data-city="${city}" type="button">
+      ${city === 'todos' ? 'Todos' : prettyCity(city)}
+    </button>
+  `).join('');
+
+  $$('.city-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.city = btn.dataset.city;
+      renderResults();
+      renderFilterChoices();
+    });
+  });
+}
+
+function renderResults() {
+  renderCityChips();
+
+  const material = state.material !== 'todos'
+    ? materialById(state.material)
+    : null;
+
+  $('#searchTitle').textContent =
+    state.nearbyMode ? 'Perto de você' : 'Ecopontos próximos';
+
+  $('#searchSubtitle').textContent =
+    state.nearbyMode && state.userPosition
+      ? 'Pontos ordenados pela distância da sua localização'
+      : material
+        ? `Locais que recebem ${material.name} na Grande Vitória`
+        : 'Encontre locais para descarte na Grande Vitória';
+
+  $('#resultSearch').value = state.query;
+  $('#resultSearchClear').hidden = !state.query;
+
+  const arr = filteredLocations();
+
+  $('#resultsCount').textContent =
+    `${arr.length} ${arr.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}`;
+
+  $('#pointList').innerHTML = arr.map(pointCard).join('');
+  $('#emptyPanel').hidden = arr.length > 0;
+
+  attachPointEvents();
+
+  $('#sortText').textContent =
+    state.sort === 'relevance'
+      ? 'Relevância'
+      : state.sort === 'distance'
+        ? 'Mais próximos'
+        : 'A–Z';
+}
+
+function attachPointEvents() {
+  $$('[data-map]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.selectedLocation = btn.dataset.map;
+
+      const loc = locationById(btn.dataset.map);
+      if (loc) addRecent(loc.name, 'location', btn.dataset.map);
+
+      showScreen('map');
+    });
+  });
+}
+function renderMap() {
+  const loc = locationById(state.selectedLocation);
+
+  if (!loc) {
+    showScreen('search', { push: false });
+    return;
+  }
+
+  const iframe = $('#osmMap');
+  const loading = $('#mapLoading');
+
+  loading.classList.remove('loaded');
+
+  if (hasCoordinates(loc)) {
+    iframe.hidden = false;
+    loading.hidden = false;
+
+    const pad = 0.022;
+    const bbox = [
+      loc.lng - pad,
+      loc.lat - pad,
+      loc.lng + pad,
+      loc.lat + pad
+    ].join('%2C');
+
+    iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`;
+
+    iframe.onload = () => loading.classList.add('loaded');
+  } else {
+    iframe.hidden = true;
+    loading.hidden = true;
+  }
+
+  const materialsHTML = loc.materials.length
+    ? loc.materials.map(tagMarkup).join('')
+    : '<p>Consulte o estabelecimento para confirmar os materiais recebidos.</p>';
+
+  const mapLink = hasCoordinates(loc)
+    ? routeUrl(loc.address)
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc.address)}`;
+
+  $('#routeCard').innerHTML = `
+    <article class="route-summary">
+      <div class="route-summary-top">
+        ${thumbMarkup()}
+        <div>
+          <h2>${loc.name}</h2>
+          <p>${loc.type || 'Ponto de coleta'}</p>
+          <p>${loc.address}</p>
+          <p>${loc.hours}</p>
+          ${loc.phone ? `<p>Telefone: ${loc.phone}</p>` : ''}
+        </div>
+        <span class="route-meta">${distanceLabel(loc)}</span>
+      </div>
+
+      <div class="tag-row">${materialsHTML}</div>
+
+      <a class="route-open"
+         href="${mapLink}"
+         target="_blank"
+         rel="noopener">
+        ${ICONS.route} Abrir localização no Google Maps
+      </a>
+    </article>
+  `;
+}
+
+function buildSuggestions(value) {
+  const q = normalize(value);
+  if (!q) return [];
+
+  const mats = wasteTypes
+    .filter(m =>
+      normalize(m.name).includes(q) ||
+      m.aliases.some(a => normalize(a).includes(q))
+    )
+    .slice(0, 4)
+    .map(m => ({
+      type: 'material',
+      id: m.id,
+      title: m.name,
+      subtitle: 'Ver como descartar',
+      icon: m.icon
+    }));
+
+  const pts = locations
+    .filter(l =>
+      normalize(`${l.name} ${l.district} ${prettyCity(l.city)}`).includes(q)
+    )
+    .slice(0, 4)
+    .map(l => ({
+      type: 'location',
+      id: l.id,
+      title: l.name,
+      subtitle: `${l.district} • ${prettyCity(l.city)}`,
+      icon: ICONS.pin
+    }));
+
+  return [...mats, ...pts];
+}
+
+function renderSuggestions(container, value, onSelect) {
+  const items = buildSuggestions(value);
+
+  if (!items.length) {
+    container.hidden = true;
+    return;
+  }
+
+  container.innerHTML = items.map(item => `
+    <button class="suggestion-item"
+      type="button"
+      data-type="${item.type}"
+      data-id="${item.id}">
+      <span class="suggestion-symbol">${item.icon}</span>
+      <span>
+        <b>${item.title}</b>
+        <small>${item.subtitle}</small>
+      </span>
+      <span class="suggestion-arrow">›</span>
+    </button>
+  `).join('');
+
+  container.hidden = false;
+
+  $$('.suggestion-item', container).forEach(btn => {
+    btn.addEventListener('click', () =>
+      onSelect(btn.dataset.type, btn.dataset.id)
+    );
+  });
+}
+
+function handleSuggestion(type, id) {
+  if (type === 'material') {
+    state.query = '';
+    state.material = id;
+    state.selectedMaterial = id;
+    addRecent(materialById(id).name, 'material', id);
+    showScreen('material');
+  } else {
+    const loc = locationById(id);
+
+    if (!loc) return;
+
+    state.nearbyMode = false;
+    state.query = loc.district;
+    state.material = 'todos';
+
+    addRecent(loc.name, 'location', id);
+    showScreen('search');
+  }
+}
+
+function openNearbyResults() {
+  state.nearbyMode = true;
+  state.city = 'todos';
+  state.material = 'todos';
+  state.query = '';
+  state.sort = 'distance';
+  state.maxDistance = 30;
+
+  showScreen('search');
+  renderResults();
+  renderFilterChoices();
+}
+
+function requestLocation() {
+  if (state.userPosition) {
+    openNearbyResults();
+    showToast('Mostrando os pontos mais próximos de você.');
+    return;
+  }
+
+  if (!navigator.geolocation) {
+    showToast('Este navegador não oferece geolocalização.');
+    return;
+  }
+
+  showToast('Solicitando sua localização…');
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      state.userPosition = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
+
+      openNearbyResults();
+      showToast('Localização ativada. Pontos ordenados por proximidade.');
+    },
+    () => {
+      state.nearbyMode = false;
+      showToast('Não foi possível acessar sua localização. Você pode buscar por cidade.');
+      showScreen('search');
+    },
+    {
+      enableHighAccuracy: false,
+      timeout: 8000,
+      maximumAge: 300000
+    }
+  );
+}
+
+function renderFilterChoices() {
+  const cities = [
+    'todos',
+    'Vitoria',
+    'Vila Velha',
+    'Serra',
+    'Cariacica',
+    'Viana',
+    'Guarapari'
+  ];
+
+  $('#filterCities').innerHTML = cities.map(c => `
+    <button class="choice ${state.city === c ? 'active' : ''}"
+      data-filter-city="${c}" type="button">
+      ${c === 'todos' ? 'Todos' : prettyCity(c)}
+    </button>
+  `).join('');
+
+  $('#filterMaterials').innerHTML = `
+    <button class="choice material-choice ${state.material === 'todos' ? 'active' : ''}"
+      data-filter-material="todos" type="button">
+      ${ICONS.leaf}Todos
+    </button>
+  ` + wasteTypes.map(m => `
+    <button class="choice material-choice ${state.material === m.id ? 'active' : ''}"
+      data-filter-material="${m.id}" type="button">
+      ${m.icon}${m.name}
+    </button>
+  `).join('');
+
+  $('#distanceRange').value = state.maxDistance;
+  $('#distanceLabel').textContent = `Até ${state.maxDistance} km`;
+
+  $$('[data-filter-city]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.city = btn.dataset.filterCity;
+      renderFilterChoices();
+    });
+  });
+
+  $$('[data-filter-material]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.material = btn.dataset.filterMaterial;
+      renderFilterChoices();
+    });
+  });
+}
+
+// PWA
+function isStandalone() {
+  return matchMedia('(display-mode: standalone)').matches ||
+    navigator.standalone === true;
+}
+
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function updateInstallUI() {
+  const installed = isStandalone();
+  const ios = isIOS();
+
+  const homeButton = $('#homeInstall');
+  const homeCard = $('#homeInstallCard');
+  const guideButton = $('#installAppButton');
+
+  if (homeButton) homeButton.hidden = installed;
+  if (homeCard) homeCard.hidden = installed;
+
+  if (guideButton) {
+    guideButton.hidden = false;
+    guideButton.textContent = installed ? 'Adicionado' : 'Adicionar';
+    guideButton.disabled = installed;
+  }
+
+  $('#iosGuide').hidden = installed || !ios;
+}
+
+function openInstallHelp() {
+  const dialog = $('#installDialog');
+  const steps = $('#installSteps');
+  const title = $('#installDialogTitle');
+  const text = $('#installDialogText');
+  const primary = $('#installPrimary');
+
+  if (isIOS()) {
+    title.textContent = 'Adicionar no iPhone ou iPad';
+
+    text.textContent = 'No Safari, você pode salvar o EcoConecta na Tela de Início para abrir como um aplicativo.';
+
+    steps.innerHTML = `
+      <li><span>1</span><div><b>Abra no Safari</b><p>Se estiver em outro navegador, abra esta página no Safari.</p></div></li>
+      <li><span>2</span><div><b>Toque em Compartilhar</b><p>Use o ícone de compartilhamento do Safari.</p></div></li>
+      <li><span>3</span><div><b>Adicionar à Tela de Início</b><p>Confirme o nome EcoConecta e toque em Adicionar.</p></div></li>
+    `;
+
+    primary.textContent = 'Entendi';
+    primary.dataset.action = 'close';
+  } else {
+    title.textContent = 'Salvar EcoConecta no celular';
+
+    text.textContent = 'Seu navegador não exibiu a instalação automática. Você ainda pode criar um atalho pela opção de instalar/adicionar à tela inicial do navegador.';
+
+    steps.innerHTML = `
+      <li><span>1</span><div><b>Abra o menu do navegador</b><p>Normalmente é o botão ⋮ ou o menu de opções.</p></div></li>
+      <li><span>2</span><div><b>Procure a opção de instalação</b><p>Ela pode aparecer como “Instalar app” ou “Adicionar à tela inicial”.</p></div></li>
+      <li><span>3</span><div><b>Confirme</b><p>O ícone do EcoConecta ficará junto aos seus aplicativos.</p></div></li>
+    `;
+
+    primary.textContent = 'Entendi';
+    primary.dataset.action = 'close';
+  }
+
+  if (typeof dialog.showModal === 'function') {
+    dialog.showModal();
+  } else {
+    showToast('Use o menu do navegador para adicionar o EcoConecta à tela inicial.');
+  }
+}
+
+async function requestInstall() {
+  if (isStandalone()) {
+    showToast('O EcoConecta já está salvo neste dispositivo.');
+    return;
+  }
+
+  if (isIOS()) {
+    openInstallHelp();
+    return;
+  }
+
+  if (!deferredInstallPrompt) {
+    openInstallHelp();
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+
+  updateInstallUI();
+
+  if (choice.outcome === 'accepted') {
+    showToast('EcoConecta adicionado ao dispositivo.');
+  }
+}
+
+// Inicialização e eventos
+renderMaterials();
+renderFilterChoices();
+
+$$('[data-nav-screen]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.nearbyMode = false;
+    showScreen(btn.dataset.navScreen);
+  });
+});
+
+$$('[data-back]').forEach(btn =>
+  btn.addEventListener('click', goBack)
+);
+
+$('#nearMeNav').addEventListener('click', requestLocation);
+$('#moreGuide').addEventListener('click', () => showScreen('guide'));
+$('#moreInstall').addEventListener('click', requestInstall);
+$('#moreAbout').addEventListener('click', () => showScreen('about'));
+$('#howHome').addEventListener('click', () => showScreen('guide'));
+$('#ecoBanner').addEventListener('click', () => openMaterial('plastico'));
+
+$('#allMaterials').addEventListener('click', () => {
+  state.nearbyMode = false;
+  state.material = 'todos';
+  state.query = '';
+  showScreen('search');
+});
+
+$('#openFiltersTop').addEventListener('click', () => {
+  renderFilterChoices();
+  $('#filterDialog').showModal();
+});
+
+$('#distanceRange').addEventListener('input', e => {
+  $('#distanceLabel').textContent = `Até ${e.target.value} km`;
+});
+
+$('#filterForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  state.maxDistance = Number($('#distanceRange').value);
+  renderResults();
+
+  const dialog = $('#filterDialog');
+  if (dialog?.open) dialog.close();
+});
+
+$('#clearFilter').addEventListener('click', () => {
+  state.city = 'todos';
+  state.material = 'todos';
+  state.maxDistance = 20;
+  renderFilterChoices();
+});
+
+$('#resetSearchFilters').addEventListener('click', () => {
+  state.city = 'todos';
+  state.material = 'todos';
+  state.query = '';
+  state.maxDistance = 20;
+  renderResults();
+});
+
+$('#sortResults').addEventListener('click', () => {
+  const order = state.userPosition
+    ? ['relevance', 'distance', 'alpha']
+    : ['relevance', 'alpha'];
+
+  state.sort = order[(order.indexOf(state.sort) + 1) % order.length];
+  renderResults();
+});
+
+$('#homeInstall').addEventListener('click', requestInstall);
+$('#homeInstallAction').addEventListener('click', requestInstall);
+$('#installAppButton').addEventListener('click', requestInstall);
+
+$('#installClose').addEventListener('click', () =>
+  $('#installDialog').close()
+);
+
+$('#installPrimary').addEventListener('click', () =>
+  $('#installDialog').close()
+);
+
+$('#installDialog').addEventListener('click', e => {
+  if (e.target === $('#installDialog')) {
+    $('#installDialog').close();
+  }
+});
+
+function connectSearch(input, clearBtn, suggestions, mode) {
+  input.addEventListener('input', () => {
+    const value = input.value;
+
+    clearBtn.hidden = !value;
+
+    renderSuggestions(suggestions, value, (type, id) => {
+      suggestions.hidden = true;
+      handleSuggestion(type, id);
+    });
+
+    if (mode === 'results') {
+      state.nearbyMode = false;
+      state.query = value;
+      renderResults();
+    }
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      state.query = input.value;
+
+      const match = matchMaterials(input.value)[0];
+
+      if (mode === 'home' && match) {
+        openMaterial(match.id);
+      } else {
+        state.nearbyMode = false;
+        state.material = 'todos';
+        showScreen('search');
+        renderResults();
+      }
+
+      suggestions.hidden = true;
+    }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.hidden = true;
+    suggestions.hidden = true;
+
+    if (mode === 'results') {
+      state.nearbyMode = false;
+      state.query = '';
+      renderResults();
+    }
+
+    input.focus();
+  });
+}
+
+connectSearch(
+  $('#homeSearch'),
+  $('#homeSearchClear'),
+  $('#homeSuggestions'),
+  'home'
+);
+
+connectSearch(
+  $('#resultSearch'),
+  $('#resultSearchClear'),
+  $('#resultSuggestions'),
+  'results'
+);
+
+document.addEventListener('click', e => {
+  if (!$('#homeSearchWrap').contains(e.target)) {
+    $('#homeSuggestions').hidden = true;
+  }
+
+  if (!$('#resultSearchWrap').contains(e.target)) {
+    $('#resultSuggestions').hidden = true;
+  }
+});
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  updateInstallUI();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  updateInstallUI();
+  showToast('EcoConecta instalado com sucesso.');
+});
+
+const canSW =
+  location.protocol === 'https:' ||
+  ['localhost', '127.0.0.1'].includes(location.hostname);
+
+if ('serviceWorker' in navigator && canSW) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./service-worker.js')
+      .catch(() => {});
+  });
+}
+
+updateInstallUI();
+
+const splash = $('#splash');
+const splashEnter = $('#splashEnter');
+
+if (splash && splashEnter) {
+  splashEnter.addEventListener('click', () => {
+    splash.classList.add('hide');
+    splash.setAttribute('aria-hidden', 'true');
+
+    setTimeout(() => {
+      splash.remove();
+
+      const firstInteractive = $('#homeSearch');
+
+      if (firstInteractive) {
+        firstInteractive.focus({ preventScroll: true });
+      }
+    }, 460);
+  });
+}
